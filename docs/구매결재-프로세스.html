@@ -1,0 +1,366 @@
+<title>X-Manager 구매 결재 프로세스</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --surface:#ffffff; --surface-2:#f0f3f8;
+    --ink:#1a1f29; --muted:#5b6472; --faint:#8a93a2;
+    --border:#e2e6ec; --border-strong:#cfd5df;
+    --pre:#2f5fd0;      /* 구매기안서 / 사전(PRE) */
+    --post:#0e8a6a;     /* 지출결의서 / 사후(POST) */
+    --po:#8a5cd0;       /* 발주서 */
+    --ok:#1a8f4c; --warn:#b8760f; --bad:#c8392e;
+    --code-bg:#eaeef4; --code-ink:#33507f;
+    --shadow:0 1px 2px rgba(20,30,50,.04), 0 3px 10px rgba(20,30,50,.04);
+    --mono:'JetBrains Mono','D2Coding',ui-monospace,'SFMono-Regular',Menlo,monospace;
+    --sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0e1116; --surface:#161a21; --surface-2:#1b212b;
+      --ink:#e7eaf0; --muted:#9aa3b2; --faint:#6b7482;
+      --border:#252b36; --border-strong:#333b48;
+      --pre:#6f9dff; --post:#35c9a0; --po:#b090f0;
+      --ok:#4cc47f; --warn:#e0a13e; --bad:#f0776b;
+      --code-bg:#1d242f; --code-ink:#9fc0ff;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f5f7fa; --surface:#ffffff; --surface-2:#f0f3f8; --ink:#1a1f29; --muted:#5b6472; --faint:#8a93a2;
+    --border:#e2e6ec; --border-strong:#cfd5df; --pre:#2f5fd0; --post:#0e8a6a; --po:#8a5cd0;
+    --ok:#1a8f4c; --warn:#b8760f; --bad:#c8392e; --code-bg:#eaeef4; --code-ink:#33507f;
+    --shadow:0 1px 2px rgba(20,30,50,.04), 0 3px 10px rgba(20,30,50,.04);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1116; --surface:#161a21; --surface-2:#1b212b; --ink:#e7eaf0; --muted:#9aa3b2; --faint:#6b7482;
+    --border:#252b36; --border-strong:#333b48; --pre:#6f9dff; --post:#35c9a0; --po:#b090f0;
+    --ok:#4cc47f; --warn:#e0a13e; --bad:#f0776b; --code-bg:#1d242f; --code-ink:#9fc0ff;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    line-height:1.65; font-size:16px; letter-spacing:-.01em;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:40px 22px 96px}
+  code,.mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+  /* ── header ── */
+  header.doc{margin-bottom:34px}
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--pre)}
+  h1{font-size:clamp(26px,4.5vw,38px); line-height:1.15; margin:.28em 0 .15em; font-weight:800; text-wrap:balance}
+  .lede{font-size:16.5px; color:var(--muted); margin:0; max-width:62ch}
+  .legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+  .chip{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:600;
+    padding:5px 11px; border-radius:999px; border:1px solid var(--border-strong); background:var(--surface)}
+  .dot{width:9px; height:9px; border-radius:50%}
+  .dot.pre{background:var(--pre)} .dot.post{background:var(--post)} .dot.po{background:var(--po)}
+
+  /* ── flow stepper ── */
+  .glance{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px 20px;
+    box-shadow:var(--shadow); margin:28px 0 40px}
+  .glance h2{margin:0 0 4px}
+  .flow{display:flex; flex-wrap:wrap; gap:10px 6px; margin-top:16px; align-items:stretch}
+  .node{flex:1 1 118px; min-width:118px; position:relative; background:var(--surface-2);
+    border:1px solid var(--border); border-radius:11px; padding:11px 12px}
+  .node .n{font-family:var(--mono); font-size:11.5px; font-weight:700; color:var(--faint)}
+  .node .t{font-size:13.5px; font-weight:700; margin-top:2px; line-height:1.35}
+  .node .s{font-family:var(--mono); font-size:11px; margin-top:5px; letter-spacing:.02em}
+  .node.pre{border-top:3px solid var(--pre)} .node.post{border-top:3px solid var(--post)}
+  .node.mid{border-top:3px solid var(--faint)}
+  .s.ok{color:var(--ok)} .s.prog{color:var(--warn)} .s.draft{color:var(--faint)}
+
+  /* ── sections ── */
+  section{margin-top:14px}
+  .phase{display:flex; gap:16px; padding:22px 0; border-top:1px solid var(--border)}
+  .phase:first-of-type{border-top:none}
+  .num{flex:none; width:34px; height:34px; border-radius:50%; display:grid; place-items:center;
+    font-family:var(--mono); font-weight:700; font-size:15px; color:#fff; background:var(--faint); margin-top:2px}
+  .num.pre{background:var(--pre)} .num.post{background:var(--post)}
+  .phase-body{flex:1; min-width:0}
+  .phase h3{margin:2px 0 3px; font-size:20px; font-weight:800; letter-spacing:-.02em}
+  .tag{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.04em; padding:2px 8px; border-radius:6px;
+    vertical-align:middle; margin-left:8px; border:1px solid transparent}
+  .tag.pre{color:var(--pre); background:color-mix(in srgb,var(--pre) 12%,transparent); border-color:color-mix(in srgb,var(--pre) 24%,transparent)}
+  .tag.post{color:var(--post); background:color-mix(in srgb,var(--post) 12%,transparent); border-color:color-mix(in srgb,var(--post) 24%,transparent)}
+  .tag.common{color:var(--muted); background:var(--surface-2); border-color:var(--border-strong)}
+  .phase p{margin:.5em 0}
+  .phase ul{margin:.5em 0; padding-left:1.15em}
+  .phase li{margin:.28em 0}
+  .phase li::marker{color:var(--faint)}
+  b,strong{font-weight:700}
+  .k{color:var(--muted); font-weight:600}
+
+  /* meta grid inside a phase */
+  .meta{display:grid; grid-template-columns:76px 1fr; gap:2px 12px; margin:12px 0; padding:12px 14px;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; font-size:14.5px}
+  .meta dt{font-size:12px; font-weight:700; color:var(--faint); letter-spacing:.03em; padding-top:3px; text-transform:uppercase}
+  .meta dd{margin:0 0 6px}
+  .meta dd:last-child{margin-bottom:0}
+
+  .callout{border-left:3px solid var(--po); background:color-mix(in srgb,var(--po) 7%,var(--surface));
+    padding:11px 14px; border-radius:0 8px 8px 0; margin:12px 0; font-size:14px}
+  .callout.warn{border-color:var(--warn); background:color-mix(in srgb,var(--warn) 8%,var(--surface))}
+  .callout .lab{font-weight:700; color:var(--po)}
+  .callout.warn .lab{color:var(--warn)}
+
+  /* pills for status/notif */
+  .pill{display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:12px; font-weight:600;
+    padding:2px 8px; border-radius:6px; background:var(--code-bg); color:var(--code-ink); white-space:nowrap}
+  .pill.ok{background:color-mix(in srgb,var(--ok) 15%,transparent); color:var(--ok)}
+  .pill.prog{background:color-mix(in srgb,var(--warn) 15%,transparent); color:var(--warn)}
+  .pill.bad{background:color-mix(in srgb,var(--bad) 15%,transparent); color:var(--bad)}
+  .arrow{color:var(--faint); margin:0 3px}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:12px; margin:14px 0; background:var(--surface)}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:520px}
+  th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top}
+  thead th{font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); background:var(--surface-2); font-weight:700}
+  tbody tr:last-child td{border-bottom:none}
+  td .who{font-weight:700}
+  .refs h2{border-top:2px solid var(--border-strong); padding-top:26px; margin-top:40px}
+
+  .foot{margin-top:44px; padding-top:18px; border-top:1px solid var(--border); font-size:13px; color:var(--faint)}
+  @media (max-width:560px){
+    .wrap{padding:28px 16px 72px}
+    .phase{gap:12px}
+    .meta{grid-template-columns:1fr}
+    .meta dt{padding-top:8px}
+  }
+</style>
+
+<div class="wrap">
+  <header class="doc">
+    <div class="eyebrow">X-Manager · 전자결재</div>
+    <h1>구매 결재 전 과정</h1>
+    <p class="lede">구매기안서 작성부터 승인, 그리고 이어지는 지출결의서 작성·승인까지 — 실제 시스템 로직 기준으로 각 단계의 상태 전이·알림·조건을 정리했습니다.</p>
+    <div class="legend">
+      <span class="chip"><span class="dot pre"></span>구매기안서 · <code>PR</code> · 사전(PRE)</span>
+      <span class="chip"><span class="dot post"></span>지출결의서 · <code>PE</code> · 사후(POST)</span>
+      <span class="chip"><span class="dot po"></span>발주서 · <code>PO</code> · 승인 시 옵션 자동생성</span>
+    </div>
+  </header>
+
+  <div class="glance">
+    <h2 style="font-size:15px; color:var(--muted); font-weight:700; letter-spacing:.02em">한눈에 보기</h2>
+    <div class="flow">
+      <div class="node pre"><div class="n">STEP 1</div><div class="t">구매기안서 작성</div><div class="s draft">DRAFT</div></div>
+      <div class="node pre"><div class="n">STEP 2</div><div class="t">상신</div><div class="s prog">IN_PROGRESS</div></div>
+      <div class="node pre"><div class="n">STEP 3</div><div class="t">결재 진행</div><div class="s prog">단계별 승인</div></div>
+      <div class="node pre"><div class="n">STEP 4</div><div class="t">최종 승인 · 발주서 자동생성</div><div class="s ok">APPROVED</div></div>
+      <div class="node post"><div class="n">STEP 5</div><div class="t">지출결의서 작성</div><div class="s draft">DRAFT · 연계 · 시행자</div></div>
+      <div class="node post"><div class="n">STEP 6</div><div class="t">지출결의서 승인</div><div class="s ok">집행일 기록</div></div>
+      <div class="node mid"><div class="n">STEP 7</div><div class="t">시행 완료</div><div class="s ok">시행자 · DONE</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <section>
+    <div class="phase">
+      <div class="num pre">1</div>
+      <div class="phase-body">
+        <h3>구매기안서 작성<span class="tag pre">사전 · PR</span></h3>
+        <p>무엇을 왜 구매할지 결재받기 위한 <b>사전 문서</b>입니다. 임시저장하면 <code>PR-YYYY-NNNN</code> 문서번호가 부여됩니다.</p>
+        <ul>
+          <li><b>품목 입력 방식(택1)</b>
+            <ul>
+              <li><span class="k">품목표(BOM·상세단가)</span> — 품목명/수량/단가/비고 + 합계 자동. <b>BOM에서 선택</b> 시 부품 링크(part_id)를 보존 → 발주서 자동생성에 사용. 엑셀 업로드도 가능.</li>
+              <li><span class="k">자유형식(일괄·간단)</span> — 텍스트로 자유 작성 + 총액 직접 입력(예: “OO상사 잔금 일괄”, “소모품 외 6종”).</li>
+            </ul>
+          </li>
+          <li><b>거래처</b>, <b>청구 금액</b>(품목표면 합계 자동 / 자유형식이면 직접), <b>구매 구분</b>(일반·과제·개발), 집행 조건, 예정 집행일, 사유</li>
+          <li><b>발주서 자동 생성(선택)</b> — 체크 + 공급업체 지정 시, 최종 승인되면 발주서가 자동 생성됨</li>
+          <li class="k" style="list-style:none; margin-left:-1.15em">※ 시행자는 구매기안서엔 없습니다 — 실제 집행 담당은 <b>지출결의서</b>에서 지정합니다.</li>
+          <li><b>결재선</b>(결재자 1명 이상, 순서 지정) + <b>참조자</b>(선택)</li>
+          <li><b>첨부파일</b> — 임시저장 후 업로드(최대 200MB)</li>
+        </ul>
+        <div class="meta">
+          <dt>결과 상태</dt><dd><span class="pill">DRAFT</span> (임시저장)</dd>
+          <dt>문서번호</dt><dd><code>PR-2026-0001</code> 형식으로 즉시 채번</dd>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section>
+    <div class="phase">
+      <div class="num pre">2</div>
+      <div class="phase-body">
+        <h3>상신<span class="tag pre">사전 · PR</span></h3>
+        <p>작성자가 결재를 요청합니다. 상태가 <span class="pill">DRAFT</span> <span class="arrow">→</span> <span class="pill prog">IN_PROGRESS</span> 로 바뀌고 1차 결재자에게 차례가 넘어갑니다.</p>
+        <div class="meta">
+          <dt>검증</dt><dd>기안자 본인 · 결재선 1명 이상 · 필수 항목(자유형식이면 자유입력 내용) · 발주서 자동생성 선택 시 공급업체·BOM품목 필수</dd>
+          <dt>처리</dt><dd>1차 결재선 <span class="pill prog">PENDING</span>, 나머지 <span class="pill">WAITING</span> · 상신시각·본문 해시 기록</dd>
+          <dt>알림</dt><dd>
+            <span class="who">1차 결재자</span> → 📄 결재 요청 &nbsp;·&nbsp;
+            <span class="who">참조자</span> → 👀 참조 지정
+          </dd>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section>
+    <div class="phase">
+      <div class="num pre">3</div>
+      <div class="phase-body">
+        <h3>결재 진행<span class="tag common">공통</span></h3>
+        <p>결재자가 순서대로 승인합니다. 본인 차례(<span class="pill prog">PENDING</span>)이고 본인일 때만 처리할 수 있으며(관리자 예외 없음), 승인 시 도장이 찍힙니다.</p>
+        <ul>
+          <li><b>중간 승인</b> — 다음 결재자에게 차례가 넘어가고(다음 결재선 <span class="pill prog">PENDING</span>), 그 결재자에게 📄 결재 요청 알림</li>
+          <li><b>결재대기함</b> — 이미 승인한 결재자도 <b>최종 승인 전까지</b> 목록에서 진행 상황을 볼 수 있고, 아직 결재할 건은 <b>“내 차례”</b> 뱃지로 구분</li>
+          <li><b>반려</b> — 의견 필수. 상태 <span class="pill bad">REJECTED</span>, 기안자에게 ⛔ 알림 → 기안자가 <b>수정 후 재상신</b> 가능</li>
+          <li><b>회수</b> — 기안자가 진행 중 문서를 회수하면 다시 <span class="pill">DRAFT</span>로, 이미 승인한 결재자에게 회수 알림</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section>
+    <div class="phase">
+      <div class="num pre">4</div>
+      <div class="phase-body">
+        <h3>최종 승인<span class="tag pre">사전 · PR</span></h3>
+        <p>마지막 결재자가 승인하면 <span class="pill ok">APPROVED</span> 로 확정되고 완료 시각이 기록됩니다. 이 시점에 자동 후속 처리(발주서)가 이어집니다.</p>
+        <div class="meta">
+          <dt>상태</dt><dd><span class="pill ok">APPROVED</span></dd>
+          <dt>알림</dt><dd><span class="who">기안자</span> → ✅ 승인 완료</dd>
+          <dt>다음</dt><dd>실제 지출은 이어서 <b>지출결의서(STEP 5~)</b>로 결재받습니다</dd>
+        </div>
+        <div class="callout">
+          <span class="lab">📦 발주서 자동 생성 (옵션 선택 시)</span><br>
+          기안서에서 <b>발주서 자동생성</b>을 켰다면, 최종 승인 즉시 <b>BOM에서 추가한 품목(part_id 보유)</b>으로 발주서 1건이 <b>임시저장(DRAFT)</b> 상태로 자동 생성됩니다. 공급업체는 기안서에서 지정한 거래처, 자유입력 품목은 제외됩니다. 기안자에게 알림이 가고, <b>발주 관리</b>에서 확인·확정합니다. <span style="color:var(--faint)">(실패해도 결재 승인은 유지되는 best-effort)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section>
+    <div class="phase">
+      <div class="num post">5</div>
+      <div class="phase-body">
+        <h3>지출결의서 작성<span class="tag post">사후 · PE</span></h3>
+        <p>승인된 구매기안서에 이어 실제 지출(결제)을 결재받는 <b>사후 문서</b>입니다. 승인된 구매기안서 상세의 <b>“후속: 지출결의서 작성”</b>으로 진입하면 선행 문서가 자동 연결되고 내용이 미리 채워집니다.</p>
+        <ul>
+          <li>거래처, 품목(구매기안서 내용 프리필), 청구 금액, <b>결제방법</b>(현금-선결제 / 익월결제 / 카드결제), 집행 요청 사유·시점, <b>실지급액</b>, 비고</li>
+          <li><b>시행자 지정(선택)</b> — 승인 후 실제 집행(결제)을 맡을 사람 <span class="k">(시행자는 지출결의서에서만 지정)</span></li>
+          <li><b>관련문서</b>로 선행 구매기안서를 연결</li>
+        </ul>
+        <div class="meta">
+          <dt>결과 상태</dt><dd><span class="pill">DRAFT</span> · 문서번호 <code>PE-2026-0001</code></dd>
+          <dt>연계</dt><dd>지출결의서(사후)는 승인된 구매기안서(사전)에 연결되는 구조</dd>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section>
+    <div class="phase">
+      <div class="num post">6</div>
+      <div class="phase-body">
+        <h3>지출결의서 상신 · 승인<span class="tag post">사후 · PE</span></h3>
+        <p>상신과 결재 진행은 구매기안서와 동일합니다. <b>최종 승인 = 집행(결제) 완료</b>로 처리됩니다.</p>
+        <div class="meta">
+          <dt>상신 규칙</dt><dd>사후 문서라 원칙적으로 <b>승인된 구매기안서 연결</b> 전제. 단, 현재 정책은 <b>미연결이어도 상신 통과</b>(최종 결재자가 판단) — 연결했다면 그 구매기안서가 승인 완료 상태여야 함</dd>
+          <dt>상신 알림</dt><dd><span class="who">1차 결재자</span> → 📄 결재 요청 · <span class="who">참조자</span> → 👀 · <span class="who">시행자</span> → 📦 시행 예정 지정</dd>
+          <dt>최종 승인</dt><dd>상태 <span class="pill ok">APPROVED</span> · <b>시행일(집행일 = 결제일)</b> 자동 기록(입력값/미입력 시 당일) · 시행자 지정 시 <span class="pill prog">시행 대기(PENDING)</span> 전환</dd>
+          <dt>승인 알림</dt><dd><span class="who">기안자</span> → ✅ 승인 완료 · <span class="who">시행자</span> → 📦 “시행하세요”</dd>
+        </div>
+        <div class="callout warn">
+          <span class="lab">🛠 관리자 정정</span><br>
+          관리자는 <b>관리 → 전자결재 → 결재 검색/정정</b> 모달에서 <b>시행일자·결제(집행)일</b>을 사유 없이 즉시 수정할 수 있으며, 이 일자 수정은 <b>정정 이력에 남지 않습니다</b>(무흔적). 그 외 항목(제목/본문 등) 정정은 사유 필수 + 이력 기록.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 7 -->
+  <section>
+    <div class="phase">
+      <div class="num">7</div>
+      <div class="phase-body">
+        <h3>시행 완료 (집행)<span class="tag common">지출결의서 시행자 지정 시</span></h3>
+        <p>지출결의서에 시행자를 지정한 경우, 실제 집행(결제)을 마친 뒤 문서 상세에서 <b>“시행 완료”</b>를 눌러 마무리합니다.</p>
+        <div class="meta">
+          <dt>조건</dt><dd>지정된 <b>시행자 본인</b> · 상태 <span class="pill ok">APPROVED</span> · 시행 <span class="pill prog">PENDING(시행전)</span></dd>
+          <dt>처리</dt><dd>시행 <span class="pill prog">PENDING</span> <span class="arrow">→</span> <span class="pill ok">DONE(시행후)</span> · 시행일시 기록 · 기안자에게 ✅ 시행 완료 알림</dd>
+          <dt>관리</dt><dd><b>시행함</b> 탭에서 시행전/시행후를 필터로 관리</dd>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- reference tables -->
+  <div class="refs">
+    <h2 style="font-size:22px; font-weight:800">참고 자료</h2>
+
+    <h3 style="margin-top:22px; font-size:16px">문서번호 접두어</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>양식</th><th>접두어</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>구매기안서</td><td><code>PR</code></td><td>구매 사전 결재(PRE)</td></tr>
+          <tr><td>지출결의서</td><td><code>PE</code></td><td>구매 사후·집행(POST)</td></tr>
+          <tr><td>발주서</td><td><code>PO</code></td><td>발주 관리(자동/수동)</td></tr>
+          <tr><td>일반 기안</td><td><code>AP</code></td><td>자유 양식</td></tr>
+          <tr><td>휴가 / 휴가취소</td><td><code>LV</code> / <code>LC</code></td><td></td></tr>
+          <tr><td>출장 신청 / 정산</td><td><code>TR</code> / <code>TE</code></td><td></td></tr>
+          <tr><td>회의 안건 / 회의록 / 회의비</td><td><code>MA</code> / <code>MM</code> / <code>ME</code></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:26px; font-size:16px">알림 매트릭스</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>시점</th><th>대상</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td>상신</td><td class="who">1차 결재자</td><td>📄 결재 요청</td></tr>
+          <tr><td>상신</td><td class="who">참조자</td><td>👀 참조 문서로 지정</td></tr>
+          <tr><td>지출결의 상신</td><td class="who">시행자</td><td>📦 시행 예정 문서로 지정 <span class="k">(지출결의서만)</span></td></tr>
+          <tr><td>중간 승인</td><td class="who">다음 결재자</td><td>📄 결재 요청(차례 도달)</td></tr>
+          <tr><td>최종 승인</td><td class="who">기안자</td><td>✅ 승인 완료</td></tr>
+          <tr><td>지출결의 최종 승인</td><td class="who">시행자</td><td>📦 시행 요청(“시행하세요”) <span class="k">(지출결의서만)</span></td></tr>
+          <tr><td>구매기안 최종 승인(옵션)</td><td class="who">기안자</td><td>📦 발주서 자동 생성됨</td></tr>
+          <tr><td>반려</td><td class="who">기안자</td><td>⛔ 반려됨(의견 포함)</td></tr>
+          <tr><td>회수</td><td class="who">기승인 결재자</td><td>↩️ 회수됨</td></tr>
+          <tr><td>시행 완료</td><td class="who">기안자</td><td>✅ 시행 완료</td></tr>
+          <tr><td>의견(댓글)</td><td class="who">연관자 전원</td><td>💬 기안자·결재자·참조자·시행자</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:26px; font-size:16px">상태 값</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>구분</th><th>값</th><th>뜻</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4">문서 상태</td><td><span class="pill">DRAFT</span></td><td>임시저장 — 작성·수정·삭제 가능</td></tr>
+          <tr><td><span class="pill prog">IN_PROGRESS</span></td><td>결재 진행 중</td></tr>
+          <tr><td><span class="pill ok">APPROVED</span></td><td>최종 승인 완료</td></tr>
+          <tr><td><span class="pill bad">REJECTED</span></td><td>반려 — 수정 후 재상신 가능</td></tr>
+          <tr><td rowspan="2">시행 상태</td><td><span class="pill prog">PENDING</span></td><td>시행 전(시행자 처리 대기)</td></tr>
+          <tr><td><span class="pill ok">DONE</span></td><td>시행 완료(집행됨)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="foot">
+    실제 코드 로직(전자결재 서비스·알림·발주서 자동생성·정정) 기준으로 정리 · X-Manager 내부 참고용
+  </div>
+</div>
+
+<script>
+  (function(){
+    // 뷰어 테마 토글이 :root에 data-theme를 찍으면 그대로 따름. 별도 처리 불필요.
+    document.querySelectorAll('a').forEach(function(a){ a.setAttribute('rel','noopener'); });
+  })();
+</script>

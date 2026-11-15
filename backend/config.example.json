@@ -1,0 +1,39 @@
+{
+  "env": "production",
+
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "xmanager",
+    "password": "CHANGE_ME",
+    "name": "xmanager"
+  },
+
+  "server": {
+    "host": "0.0.0.0",
+    "port": 5198
+  },
+
+  "storage": {
+    "path": "../storage",
+    "approval": "approvals",
+    "sales_document": "sales_documents",
+    "upload": "uploads"
+  },
+
+  "nextcloud": {
+    "base_path": "",
+    "delivery_path": ""
+  },
+
+  "DATA.GO.KR": {
+    "api_key": "공공데이터포털 서비스키 (특일 정보 — 일정 캘린더 공휴일 표시, 생략 시 미표시)"
+  },
+
+  "security": {
+    "secret_key": "32자 이상 난수 (생략 시 .env.production 값 사용)",
+    "access_token_expire_minutes": 30,
+    "rbac_mode": "enforce",
+    "cors_origins": ["https://xmanager.xbeamtech.co.kr"]
+  }
+}

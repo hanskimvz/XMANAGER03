@@ -1,0 +1,102 @@
+/* ─────────────────────────────────────
+   PDF 공통 스타일 — Noto Sans / Noto Sans KR (OFL)
+   Phase 1: 견적서 전용. PI/CI는 별도 CSS 추가 예정.
+   ───────────────────────────────────── */
+
+/* ── 영문/숫자 폰트 (NotoSans) ─────────── */
+@font-face {
+  font-family: 'NotoSans';
+  src: url('../assets/fonts/NotoSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSans';
+  src: url('../assets/fonts/NotoSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSans';
+  src: url('../assets/fonts/NotoSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSans';
+  src: url('../assets/fonts/NotoSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ── 한글 폰트 (NotoSansKR) — fallback으로 동작 ── */
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../assets/fonts/NotoSansKR-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../assets/fonts/NotoSansKR-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../assets/fonts/NotoSansKR-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../assets/fonts/NotoSansKR-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ── A4 페이지 + 여백 + 푸터 ─────────── */
+@page {
+  size: A4;
+  margin: 13mm 8mm 16mm 8mm;  /* 컴팩트: 좌우 여백 축소(12→8mm)로 비고 칼럼 등 가용 폭 확대 */
+
+  @bottom-left {
+    content: string(footer-info);
+    font-family: 'NotoSans', 'NotoSansKR', sans-serif;
+    font-size: 7.5pt;
+    color: #666;
+  }
+  @bottom-right {
+    content: counter(page) ' / ' counter(pages);
+    font-family: 'NotoSans', 'NotoSansKR', sans-serif;
+    font-size: 7.5pt;
+    color: #666;
+  }
+}
+
+/* ── 기본 타이포그래피 (컴팩트) ─────────── */
+html, body {
+  font-family: 'NotoSans', 'NotoSansKR', sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.3;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── 텍스트 색상 팔레트 (Phase 4 확장) ─────────── */
+.text-color-red    { color: #c00000; }
+.text-color-orange { color: #d97706; }
+.text-color-green  { color: #059669; }
+.text-color-blue   { color: #2563eb; }
+.text-color-indigo { color: #4338ca; }
+.text-color-purple { color: #7c3aed; }
+.text-color-gray   { color: #6b7280; }
+
+h1 { font-size: 18pt; font-weight: 700; margin: 0 0 3pt 0; letter-spacing: 0.5pt; }
+h2 { font-size: 11pt; font-weight: 700; margin: 8pt 0 3pt 0; }
+h3 { font-size: 9pt; font-weight: 700; margin: 6pt 0 2pt 0; }
+p  { margin: 0 0 2pt 0; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 3pt 5pt; vertical-align: top; }

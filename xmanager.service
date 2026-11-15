@@ -1,0 +1,39 @@
+[Unit]
+Description=XMANAGER Backend API Server
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=exec
+User=hanskim
+Group=hanskim
+WorkingDirectory=/ext/xmanager/api
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# 운용 API 포트는 5197 (nginx 가 /api/ 를 이 포트로 프록시). 개발 API 는 5198 (config.json server.port, run.py)
+# nginx 를 거친 접속만 받도록 127.0.0.1 에만 바인딩한다.
+ExecStart=/usr/bin/python3 -m uvicorn app.main:app --host 127.0.0.1 --port 5197
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=xmanager-backend
+
+# 보안 설정
+NoNewPrivileges=true
+PrivateTmp=true
+# ProtectSystem=full 은 /usr, /boot, /etc 만 읽기 전용으로 만든다. /ext (api, FILES 스토리지)는 그대로 쓸 수 있다.
+# strict 로 올릴 때는 ReadWritePaths=/ext/xmanager/api /ext/FILES 를 함께 지정할 것.
+ProtectSystem=full
+ProtectHome=false
+#ProtectKernelTunables=true
+#ProtectKernelModules=true
+#ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target
+
+# COPY: sudo cp xmanager.service  /etc/systemd/system/xmanager.service
+# sudo systemctl daemon-reload
+# sudo systemctl restart xmanager.service
+
+

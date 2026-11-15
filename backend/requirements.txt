@@ -1,0 +1,43 @@
+# FastAPI 및 웹서버
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+
+# 데이터베이스
+sqlalchemy==2.0.27
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# 데이터 검증 및 설정
+pydantic==2.6.1
+pydantic-settings==2.1.0
+
+# 인증 및 보안
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.1
+
+# 날짜/시간
+python-dateutil==2.8.2
+
+# CORS
+fastapi-cors==0.0.6
+
+# 기타 유틸리티
+email-validator==2.1.0
+aiofiles==25.1.0
+openpyxl==3.1.2
+nh3==0.3.6               # 공지 본문 HTML sanitize(저장형 XSS 차단, v0.50.0)
+
+# PDF 생성
+reportlab==4.1.0          # 발주서/작업지시서 PDF (기존)
+weasyprint==65.1          # 견적서/PI/CI HTML→PDF (Phase 1+)
+                          # Windows: GTK3 런타임 사전 설치 필요 (docs/PDF_SETUP.md 참고)
+                          # 65.1로 고정 — MSYS2 harfbuzz 13.x 비호환 우회용 (services/pdf/__init__.py)
+jinja2==3.1.4             # WeasyPrint 템플릿 엔진
+
+# 웹푸시 (VAPID / Web Push) — v0.59.0
+pywebpush==2.3.0         # py-vapid, http-ece, cryptography 의존성 포함
+
+# 테스트
+pytest==8.3.4

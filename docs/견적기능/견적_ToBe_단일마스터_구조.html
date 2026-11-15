@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>X-Beam Tech · 견적 To-Be 단일 마스터 구조</title>
+<style>
+  :root{
+    --bg:#eef1f5; --surface:#ffffff; --surface-2:#f6f8fb;
+    --ink:#141922; --muted:#586374; --faint:#8a94a4;
+    --line:#d5dbe4; --line-strong:#b8c1cd;
+    --accent:#0b8a97; --accent-ink:#075860; --accent-soft:#dcf0f2;
+    --warn:#a65a0b; --warn-soft:#f6e6d2; --warn-line:#e2b98a;
+    --good:#1c774c; --good-soft:#d9efe2; --good-line:#9fd3b8;
+    --shadow:0 1px 2px rgba(20,25,34,.06), 0 8px 24px rgba(20,25,34,.05);
+    --mono:ui-monospace,"Cascadia Code","Consolas","D2Coding",monospace;
+    --sans:system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c1015; --surface:#161d26; --surface-2:#1b232e;
+      --ink:#e8edf4; --muted:#98a4b4; --faint:#6c7888;
+      --line:#28313d; --line-strong:#3a4552;
+      --accent:#37c3d0; --accent-ink:#8fe4ec; --accent-soft:#123037;
+      --warn:#e0a559; --warn-soft:#2e2417; --warn-line:#5a4626;
+      --good:#54cc8c; --good-soft:#12291d; --good-line:#2c4c39;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1015; --surface:#161d26; --surface-2:#1b232e;
+    --ink:#e8edf4; --muted:#98a4b4; --faint:#6c7888;
+    --line:#28313d; --line-strong:#3a4552;
+    --accent:#37c3d0; --accent-ink:#8fe4ec; --accent-soft:#123037;
+    --warn:#e0a559; --warn-soft:#2e2417; --warn-line:#5a4626;
+    --good:#54cc8c; --good-soft:#12291d; --good-line:#2c4c39;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#eef1f5; --surface:#ffffff; --surface-2:#f6f8fb;
+    --ink:#141922; --muted:#586374; --faint:#8a94a4;
+    --line:#d5dbe4; --line-strong:#b8c1cd;
+    --accent:#0b8a97; --accent-ink:#075860; --accent-soft:#dcf0f2;
+    --warn:#a65a0b; --warn-soft:#f6e6d2; --warn-line:#e2b98a;
+    --good:#1c774c; --good-soft:#d9efe2; --good-line:#9fd3b8;
+    --shadow:0 1px 2px rgba(20,25,34,.06), 0 8px 24px rgba(20,25,34,.05);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:48px 24px 72px;}
+
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 10px;}
+  h1{font-size:clamp(26px,3.4vw,38px);line-height:1.15;margin:0 0 12px;
+     letter-spacing:-.015em;text-wrap:balance;font-weight:700;}
+  header p.sub{font-size:17px;color:var(--muted);margin:0;max-width:60ch;}
+
+  .section{margin-top:56px;}
+  .section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;
+     border-bottom:1px solid var(--line);padding-bottom:12px;}
+  .section-head .tag{font-family:var(--mono);font-size:12px;font-weight:600;
+     padding:3px 9px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;}
+  .tag.asis{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn-line);}
+  .tag.tobe{background:var(--good-soft);color:var(--good);border:1px solid var(--good-line);}
+  h2{font-size:22px;margin:0;font-weight:650;letter-spacing:-.01em;}
+  .section-head .note{margin-left:auto;color:var(--faint);font-size:13px;}
+  .lead{color:var(--muted);font-size:15px;margin:14px 0 26px;max-width:70ch;}
+
+  /* diagram scaffold */
+  .board{overflow-x:auto;padding:6px 2px 10px;}
+  .flow{min-width:640px;display:flex;flex-direction:column;align-items:stretch;gap:0;}
+  .layer{background:var(--surface-2);border:1px solid var(--line);border-radius:16px;
+     padding:16px 18px 18px;}
+  .layer-label{display:flex;align-items:center;gap:9px;font-family:var(--mono);
+     font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+     font-weight:600;margin-bottom:13px;}
+  .layer-label .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;
+     background:var(--accent);color:#fff;font-size:11px;}
+  :root[data-theme="dark"] .layer-label .n{color:#08222a;}
+  @media (prefers-color-scheme:dark){.layer-label .n{color:#08222a;}}
+
+  .row{display:grid;gap:12px;}
+  .row.c3{grid-template-columns:repeat(3,1fr);}
+  .row.c2{grid-template-columns:repeat(2,1fr);}
+
+  .node{background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;
+     padding:13px 15px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:5px;}
+  .node .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent);
+     font-weight:600;text-transform:uppercase;}
+  .node .t{font-weight:650;font-size:15px;letter-spacing:-.01em;}
+  .node .d{font-size:13px;color:var(--muted);line-height:1.5;}
+  .node code{font-family:var(--mono);font-size:12px;background:var(--surface-2);
+     padding:1px 5px;border-radius:5px;border:1px solid var(--line);color:var(--ink);}
+  .node.master{border-color:var(--accent);}
+  .node.master::before{content:"";display:block;height:3px;width:34px;border-radius:3px;
+     background:var(--accent);margin-bottom:4px;}
+  .node.good{border-color:var(--good-line);background:linear-gradient(0deg,var(--good-soft),var(--surface) 60%);}
+  .node.warn{border-color:var(--warn-line);background:linear-gradient(0deg,var(--warn-soft),var(--surface) 60%);}
+  .node .badge{align-self:flex-start;font-family:var(--mono);font-size:10.5px;font-weight:600;
+     padding:2px 7px;border-radius:20px;letter-spacing:.03em;}
+  .badge.auto{background:var(--good-soft);color:var(--good);border:1px solid var(--good-line);}
+  .badge.manual{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn-line);}
+
+  .down{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0;color:var(--accent);}
+  .down .line{width:2px;height:14px;background:var(--accent);opacity:.55;}
+  .down .chev{width:11px;height:11px;border-right:2px solid var(--accent);
+     border-bottom:2px solid var(--accent);transform:rotate(45deg);margin-top:-4px;}
+  .down .cap{font-size:12px;color:var(--muted);font-family:var(--mono);letter-spacing:.02em;margin-top:3px;}
+
+  /* as-is chain of copies */
+  .chain{min-width:640px;display:flex;flex-direction:column;gap:0;}
+  .copy{display:flex;align-items:center;gap:14px;}
+  .copy .box{flex:1;}
+  .copy .arrow{font-family:var(--mono);font-size:12px;color:var(--warn);white-space:nowrap;
+     display:flex;flex-direction:column;align-items:center;gap:2px;min-width:118px;}
+  .copy .arrow .glyph{font-size:18px;line-height:1;}
+  .mini{background:var(--surface);border:1px solid var(--line-strong);border-radius:11px;
+     padding:11px 14px;box-shadow:var(--shadow);}
+  .mini .k{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.05em;}
+  .mini .t{font-weight:650;font-size:14.5px;margin-top:2px;}
+  .mini.m1{border-left:3px solid var(--accent);}
+  .mini.m2{border-left:3px solid var(--warn);}
+  .mini.m3{border-left:3px solid var(--warn);}
+  .vgap{height:12px;}
+
+  .callouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:22px;}
+  .callout{border-radius:12px;padding:13px 15px;font-size:13.5px;line-height:1.55;border:1px solid;}
+  .callout.bad{background:var(--warn-soft);border-color:var(--warn-line);}
+  .callout.fix{background:var(--good-soft);border-color:var(--good-line);}
+  .callout h4{margin:0 0 5px;font-size:13px;font-family:var(--mono);letter-spacing:.04em;
+     text-transform:uppercase;}
+  .callout.bad h4{color:var(--warn);} .callout.fix h4{color:var(--good);}
+  .callout p{margin:0;color:var(--ink);}
+  .callout .em{font-family:var(--mono);font-size:12px;background:var(--surface);padding:1px 5px;
+     border-radius:5px;border:1px solid var(--line);}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:26px;padding-top:18px;
+     border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .legend .sw{width:13px;height:13px;border-radius:4px;border:1px solid var(--line-strong);}
+  .sw.acc{background:var(--accent);border-color:var(--accent);}
+  .sw.g{background:var(--good-soft);border-color:var(--good-line);}
+  .sw.w{background:var(--warn-soft);border-color:var(--warn-line);}
+
+  footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
+     color:var(--faint);font-size:12.5px;font-family:var(--mono);}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 56px;}
+    .section-head{flex-wrap:wrap;} .section-head .note{margin-left:0;width:100%;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">X-Beam Tech · 견적 프로세스 정립</p>
+    <h1>커넥터·케이블 원가를 단일 마스터로 — To-Be 견적 구조</h1>
+    <p class="sub">지금 손으로 유지되는 3중 사본과 개인 PC 의존을 없애고, 하나의 마스터에서 자동 조회해 원화·미화 견적이 같은 로직으로 나오게 하는 목표 구조입니다. 원가 소스는 <strong>교체 가능한 계층</strong>이라, 지금은 Price List로 가고 추후 BOM 원가가 준비되면 그 부분만 갈아끼웁니다.</p>
+  </header>
+
+  <!-- AS-IS -->
+  <section class="section">
+    <div class="section-head">
+      <span class="tag asis">AS-IS · 현행</span>
+      <h2>커넥터 원가가 3벌 — 사람 손으로만 이어져 있음</h2>
+      <span class="note">현재 미화 견적기 기준</span>
+    </div>
+    <p class="lead">같은 커넥터 원가가 세 곳에 복사돼 있고, 각 단계가 <strong>수기 복사·재입력</strong>으로 연결됩니다. 지금은 값이 우연히 일치하지만 마스터가 바뀌면 하위 사본은 따라오지 않습니다. 케이블 원가는 아예 개인 PC/고객 폴더에 있습니다.</p>
+
+    <div class="board">
+      <div class="chain">
+        <div class="copy">
+          <div class="box"><div class="mini m1">
+            <div class="k">① 마스터</div>
+            <div class="t">HXB 커넥터 Price List.xlsx <span style="color:var(--faint);font-weight:500">(원가 K~P열)</span></div>
+          </div></div>
+          <div class="arrow"><span class="glyph">↓</span><span>사람이 복사·relabel</span></div>
+        </div>
+        <div class="vgap"></div>
+        <div class="copy">
+          <div class="box"><div class="mini m2">
+            <div class="k">② 사본</div>
+            <div class="t">미화 파일 · ‘커넥터 원가’ 시트 <span style="color:var(--faint);font-weight:500">(RJS/O2-S 코드체)</span></div>
+          </div></div>
+          <div class="arrow"><span class="glyph">↓</span><span>눈으로 찾아 타이핑</span></div>
+        </div>
+        <div class="vgap"></div>
+        <div class="copy">
+          <div class="box"><div class="mini m3">
+            <div class="k">③ 수기 재입력 · 케바케 진원지</div>
+            <div class="t">미화 파일 · 백데이터 C열(원가) + D열(마진율)</div>
+          </div></div>
+          <div class="arrow" style="color:var(--muted)"><span class="glyph">→</span><span>견적 산출</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callouts">
+      <div class="callout bad"><h4>원가 기반이 완성가</h4><p>부품이 아니라 오래된 <strong>완성 커넥터 가격</strong>이 기준. 원가 상승은 마진%·상수로 땜빵.</p></div>
+      <div class="callout bad"><h4>3중 사본</h4><p>①→②→③ 모두 수작업. 마스터 변경이 하위로 전파되지 않아 <strong>언젠가 어긋남</strong>.</p></div>
+      <div class="callout bad"><h4>원가·마진 수기</h4><p>백데이터 <span class="em">C열 원가</span>·<span class="em">D열 마진</span>을 사람이 입력 → 산출자마다 값이 달라짐.</p></div>
+      <div class="callout bad"><h4>케이블 원가 개인 PC</h4><p><span class="em">C:\Users\mj\Desktop\…</span> 및 고객 폴더 사본에만 존재. 공용 마스터 없음.</p></div>
+      <div class="callout bad"><h4>가드레일 없음</h4><p>드롭다운·검증·시트보호 전무. 품명 오타·형식오류에 취약.</p></div>
+    </div>
+  </section>
+
+  <!-- TO-BE -->
+  <section class="section">
+    <div class="section-head">
+      <span class="tag tobe">TO-BE · 목표</span>
+      <h2>단일 마스터 → 자동 조회 견적 엔진 → 원화·미화 동시 산출</h2>
+      <span class="note">통화·프리미엄은 파라미터</span>
+    </div>
+    <p class="lead">원가는 <strong>각각 하나의 마스터</strong>에만 존재하고, 견적 엔진이 품명으로 <strong>자동 조회</strong>합니다. 마진·조립비·원화 프리미엄은 숨은 <code>×1.3</code> 대신 <strong>규칙 테이블</strong>로 드러냅니다. 신입은 입력 몇 개만 하면 됩니다.</p>
+
+    <div class="board">
+      <div class="flow">
+        <!-- Layer 1: masters -->
+        <div class="layer">
+          <div class="layer-label"><span class="n">1</span> 단일 마스터 (Single Source of Truth)</div>
+          <div class="row c3">
+            <div class="node master">
+              <div class="k">커넥터 원가 소스 · 🔌 교체 가능</div>
+              <div class="t">지금: HXB Price List → 나중: BOM 롤업</div>
+              <div class="d">엔진은 이 <strong>어댑터 한 곳</strong>만 참조. 원가가 BOM으로 준비되면 여기만 갈아끼움 — 엔진·규칙·출력 불변.</div>
+            </div>
+            <div class="node master">
+              <div class="k">케이블 원가</div>
+              <div class="t">케이블 원가 마스터</div>
+              <div class="d"><code>2023Assy 원가 리스트</code>를 공용 위치로 승격. 개인 PC 참조 제거.</div>
+            </div>
+            <div class="node master">
+              <div class="k">규칙 테이블</div>
+              <div class="t">마진 · 조립비 · 프리미엄</div>
+              <div class="d">채널별 마진, 조립비표, <strong>원화 국내 프리미엄</strong>을 명시 규칙으로.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="down"><span class="line"></span><span class="chev"></span><span class="cap">자동 조회 (VLOOKUP류)</span></div>
+
+        <!-- Layer 2: engine -->
+        <div class="layer">
+          <div class="layer-label"><span class="n">2</span> 견적 엔진 (자동)</div>
+          <div class="row c2">
+            <div class="node">
+              <span class="badge manual">사람 입력</span>
+              <div class="t">입력 &amp; 가드레일</div>
+              <div class="d">품명 · 미터수 · 수량 · <strong>업체유형</strong>. 드롭다운/검증으로 오타 차단.</div>
+            </div>
+            <div class="node">
+              <span class="badge auto">자동</span>
+              <div class="t">코드 파싱 → 조회 → 델타 → 합산</div>
+              <div class="d">사이즈·채널·모드·SA 판별 → 원가 조회 → <strong>옵션·외부부품 델타 가감</strong> → 커넥터A·B·케이블·조립비 합계.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="down"><span class="line"></span><span class="chev"></span><span class="cap">통화 · 프리미엄 파라미터 적용</span></div>
+
+        <!-- Layer 3: outputs -->
+        <div class="layer">
+          <div class="layer-label"><span class="n">3</span> 출력 — 한 로직, 두 견적</div>
+          <div class="row c2">
+            <div class="node good">
+              <span class="badge auto">수출</span>
+              <div class="t">미화 견적 ($)</div>
+              <div class="d">합계 ÷ 환율 → 올림. 기준 통화.</div>
+            </div>
+            <div class="node good">
+              <span class="badge auto">국내</span>
+              <div class="t">원화 견적 (₩)</div>
+              <div class="d"><strong>명시적 국내 프리미엄 규칙</strong>(소량·단발 할증 등)으로 <code>×1.3</code> 대체.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callouts">
+      <div class="callout fix"><h4>사본 소멸</h4><p>②③ 제거. 커넥터 원가는 Price List 한 곳에서만 관리 → 드리프트 0.</p></div>
+      <div class="callout fix"><h4>케바케 제거</h4><p>마진율이 규칙 테이블에서 결정 → 산출자 재량 최소화, 신입도 동일 결과.</p></div>
+      <div class="callout fix"><h4>원화 프리미엄 투명화</h4><p>‘어디서 얼마 더 받는지’가 규칙으로 보임. 조정도 파라미터 한 줄.</p></div>
+      <div class="callout fix"><h4>옵션·외부부품 = 델타</h4><p>SUS·외부조달을 <strong>명시적 원가 가감</strong>으로 처리 → 최종가·‘기타’ 우겨넣기 제거.</p></div>
+      <div class="callout fix"><h4>BOM 준비되면 교체</h4><p>원가 소스 어댑터만 Price List → <strong>BOM 롤업</strong>으로 교체. 나머지 로직 불변.</p></div>
+      <div class="callout fix"><h4>자산 재활용</h4><p>기존 코드 파싱·채널/모드 판별·조립비표는 그대로 살려 엔진에 이식.</p></div>
+    </div>
+
+    <div class="legend">
+      <span><span class="sw acc"></span> 단일 마스터</span>
+      <span><span class="sw g"></span> 자동 / 개선</span>
+      <span><span class="sw w"></span> 수기 / 리스크</span>
+      <span style="font-family:var(--mono)">badge: 자동 = 엔진 계산 · 사람 입력 = 담당자 최소 입력</span>
+    </div>
+  </section>
+
+  <footer>working doc · 2026-08-07 · 원본 견적 폴더 참조 전용 · 산출물은 yhs 폴더</footer>
+</div>
+</body>
+</html>

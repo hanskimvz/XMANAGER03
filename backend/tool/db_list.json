@@ -1,0 +1,29 @@
+{   
+    "postgresql_org": {
+        "host": "192.168.0.100",
+        "port": 5432,
+        "user": "ro_migrate",
+        "password": "jSn8vulWlXg0fsKlDLJfBRpQ",
+        "schema": "public",
+        "default_env": "production",
+        "databases": {
+            "production": "xmanager",
+            "development": "xmanager_dev"
+        },
+        "url": null,
+        "cli": "PGPASSWORD='jSn8vulWlXg0fsKlDLJfBRpQ' psql --host 192.168.0.100 -U ro_migrate -d xmanager"
+    },
+    "postgresql_dst": {
+        "port": 5432,
+        "user": "xmanager",
+        "password": "ilovexbt",
+        "schema": "public",
+        "default_env": "production",
+        "databases": {
+            "production": "xmanager",
+            "development": "xmanager_dev"
+        },
+        "url": null,
+        "cli": "PGPASSWORD='ilovexbt' psql --host localhost -U xmanager -d xmanager"
+    }
+}

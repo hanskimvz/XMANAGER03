@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="{{ data.language.value }}">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="styles/common.css">
+  <link rel="stylesheet" href="styles/{% block stylesheet %}quotation-overseas.css{% endblock %}">
+</head>
+<body class="{% if compact %}compact{% endif %}">
+  <div class="footer-info">{% block footer_info %}{{ data.company.name_en }}{% endblock %}</div>
+  {% block content %}{% endblock %}
+</body>
+</html>

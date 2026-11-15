@@ -1,0 +1,208 @@
+/* ─────────────────────────────────────
+   국내(한글) 견적서 — 컴팩트 타이포 (페이지 수 절감)
+   ───────────────────────────────────── */
+
+/* 강조 마크업 3종 */
+.highlight-critical { color: #c00; font-weight: 700; }
+.highlight-warning  { background-color: #fff3cd; padding: 0 2pt; }
+.highlight-spec     { text-decoration: underline; text-decoration-color: #c00; text-decoration-thickness: 1pt; }
+
+/* 중앙 파란 박스 제목 */
+.title-bar {
+  text-align: center;
+  margin: 4pt auto 8pt auto;
+  width: 36%;
+}
+.title-bar span {
+  display: inline-block;
+  background: #1a3a6e;
+  color: #fff;
+  font-size: 18pt;
+  font-weight: 700;
+  letter-spacing: 6pt;
+  padding: 5pt 20pt;
+}
+
+/* 헤더 좌우: 수신처+메타 / 회사 박스 */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5pt;
+}
+.recipient-block {
+  flex: 0 0 48%;
+  font-size: 8.5pt;
+}
+.recipient-name {
+  text-decoration: underline;
+  font-weight: 700;
+  font-size: 11pt;
+  margin-bottom: 4pt;
+}
+.meta-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 8pt;
+  line-height: 1.3;
+}
+.meta-list li {
+  margin: 0.5pt 0;
+  counter-increment: meta;
+}
+.meta-list li::before {
+  content: counter(meta) ". ";
+  color: #222;
+}
+.meta-list { counter-reset: meta; }
+
+.company-block {
+  flex: 0 0 50%;
+  font-size: 8pt;
+}
+.company-block .logo-box {
+  text-align: center;
+  margin-bottom: 3pt;
+}
+.company-block .logo-box img {
+  height: 24pt;
+}
+.company-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8pt;
+}
+.company-table th,
+.company-table td {
+  border: 1pt solid #888;
+  padding: 2pt 5pt;
+  text-align: center;
+  vertical-align: middle;
+}
+.company-table th {
+  background: #f4f4f4;
+  font-weight: 500;
+  width: 18%;
+}
+.company-table td { width: 32%; }
+.staff {
+  text-align: right;
+  font-size: 8pt;
+  margin-top: 2pt;
+  color: #222;
+}
+
+/* 견적금액 행 */
+.amount-row {
+  margin: 6pt 0 4pt 0;
+  font-size: 10pt;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4pt;
+}
+.amount-row .amount-label { font-weight: 700; }
+.amount-row .amount-words { font-weight: 700; }
+.amount-row .amount-numeric {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 11pt;
+}
+.amount-row .amount-suffix {
+  color: #222;
+  font-weight: 500;
+}
+
+/* 품목 테이블 — 컴팩트 */
+table.line-items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8pt;
+  margin-bottom: 5pt;
+}
+table.line-items thead th {
+  background: #f4f4f4;
+  border: 1pt solid #888;
+  padding: 2.5pt 5pt;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+table.line-items tbody td {
+  border: 1pt solid #888;
+  padding: 2.5pt 5pt;
+  vertical-align: top;
+}
+table.line-items tbody tr {
+  page-break-inside: avoid;
+}
+table.line-items .col-no    { width: 5%;  text-align: center; }
+table.line-items .col-desc  { width: 47%; }
+table.line-items .col-qty   { width: 6%;  text-align: center; }
+table.line-items .col-uom   { width: 6%;  text-align: center; }
+table.line-items .col-price { width: 12%; text-align: right; }
+table.line-items .col-total { width: 14%; text-align: right; }
+table.line-items .col-rem   { width: 10%; }
+table.line-items .pn {
+  font-weight: 700;
+  color: #1a3a6e;
+  font-size: 8.5pt;
+}
+table.line-items .spec {
+  white-space: pre-line;
+  margin-top: 0.5pt;
+  font-size: 7.5pt;
+  line-height: 1.2;
+  color: #333;
+}
+table.line-items .sum-row td,
+table.line-items .total-row td {
+  background: #f4f4f4;
+  font-weight: 700;
+}
+table.line-items .sum-label {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1pt;
+}
+
+/* TBD 등 텍스트 오버라이드 항목 안내 각주 */
+.tbd-note {
+  margin-top: 4pt;
+  font-size: 7.5pt;
+  font-style: italic;
+  color: #666;
+}
+
+/* MOQ 그룹 행: 셀 안 스택 */
+table.line-items tr.moq-group td {
+  padding-top: 6pt;
+  padding-bottom: 6pt;
+  vertical-align: middle;
+}
+table.line-items td.moq-stack {
+  padding-top: 4pt;
+  padding-bottom: 4pt;
+}
+table.line-items td.moq-stack div {
+  padding: 2.5pt 0;
+  line-height: 1.25;
+}
+table.line-items td.moq-stack div + div {
+  border-top: 1pt dotted #bbb;
+}
+
+.remarks-block {
+  margin-top: 5pt;
+  font-size: 8pt;
+  white-space: pre-line;
+  border: 1pt solid #888;
+  padding: 3pt 6pt;
+}
+
+/* 오토핏 컴팩트 모드 (생성기가 아슬아슬한 2페이지에서만 적용) */
+body.compact table.line-items thead th,
+body.compact table.line-items tbody td { padding-top: 1.5pt; padding-bottom: 1.5pt; }
+body.compact table.line-items .spec { line-height: 1.12; margin-top: 0.3pt; }
+body.compact .remarks-block { margin-top: 3pt; }

@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% block title %}Commercial Invoice {{ data.document_number }}{% endblock %}
+{% block stylesheet %}quotation-overseas.css{% endblock %}
+{% block footer_info %}{{ data.company.name_en }}{% endblock %}
+{% block content %}
+
+<header class="overseas-header">
+  <div class="logo-block">
+    <img src="assets/logo-overseas.png" alt="XBEAMTECH">
+  </div>
+  <div class="company-block">
+    {{ data.company.name_en }}<br>
+    {{ data.company.address_en }}<br>
+    Phone: {{ data.company.tel }}{% if data.company.fax %} &nbsp; Fax: {{ data.company.fax }}{% endif %}{% if data.company.email %} &nbsp; Email: {{ data.company.email }}{% endif %}
+  </div>
+</header>
+
+<h1 class="doc-title">COMMERCIAL INVOICE</h1>
+
+<table class="meta-table">
+  <tr>
+    <th>CI No.:</th>
+    <td>{{ data.document_number }}{% if data.version > 1 %} (v{{ data.version }}){% endif %}</td>
+    <th>Prepared by:</th>
+    <td>{{ data.prepared_by or '' }}</td>
+  </tr>
+  <tr>
+    <th>CI Date:</th>
+    <td>{{ data.document_date.strftime('%d.%b.%Y').upper() }}</td>
+    <th>Email:</th>
+    <td>{{ data.prepared_email or '' }}</td>
+  </tr>
+  {% if data.po_number or data.po_date %}
+  <tr>
+    <th>Customer PO No.:</th>
+    <td>{{ data.po_number or '' }}</td>
+    <th>PO Date:</th>
+    <td>{{ data.po_date or '' }}</td>
+  </tr>
+  {% endif %}
+  {% if data.pi_number or data.pi_date %}
+  <tr>
+    <th>PI No.:</th>
+    <td>{{ data.pi_number or '' }}</td>
+    <th>PI Date:</th>
+    <td>{{ data.pi_date or '' }}</td>
+  </tr>
+  {% endif %}
+</table>
+
+<table class="parties-table">
+  <thead>
+    <tr><th>BUYER</th><th>CONSIGNEE / SHIP TO</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="row"><span class="lbl">Name:</span>{{ data.customer.name_en or data.customer.name }}</div>
+        <div class="row"><span class="lbl">Address:</span>{{ data.customer.address or '' }}</div>
+        <div class="row"><span class="lbl">Contact:</span>{{ data.customer.contact_person or '' }}</div>
+        <div class="row"><span class="lbl">Phone:</span>{{ data.customer.tel or '+' }}</div>
+        <div class="row"><span class="lbl">Email:</span>{{ data.customer.email or '' }}</div>
+        {% if data.customer.tax_id %}<div class="row"><span class="lbl">VAT/TAX ID:</span>{{ data.customer.tax_id }}</div>{% endif %}
+      </td>
+      <td>
+        {% if data.ship_to.same_as_buyer %}
+          <div class="row"><span class="lbl">Name:</span>Same as Buyer</div>
+        {% else %}
+          <div class="row"><span class="lbl">Name:</span>{{ data.ship_to.name or '' }}</div>
+          <div class="row"><span class="lbl">Address:</span>{{ data.ship_to.address or '' }}</div>
+          <div class="row"><span class="lbl">Contact:</span>{{ data.ship_to.contact or '' }}</div>
+          <div class="row"><span class="lbl">Phone:</span>{{ data.ship_to.phone or '' }}</div>
+          <div class="row"><span class="lbl">Email:</span>{{ data.ship_to.email or '' }}</div>
+        {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="terms-bank-table">
+  <thead>
+    <tr><th>Terms and Conditions</th><th>Bank Details</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        {% if data.terms.ship_from %}<div class="row"><span class="lbl">Ship From:</span>{{ data.terms.ship_from }}</div>{% endif %}
+        {% if data.terms.destination %}<div class="row"><span class="lbl">Final Destination:</span>{{ data.terms.destination }}</div>{% endif %}
+        {% if data.terms.transportation %}<div class="row"><span class="lbl">Transportation:</span>{{ data.terms.transportation }}</div>{% endif %}
+        {% if data.terms.shipment_date %}<div class="row"><span class="lbl">Shipment Date:</span>{{ data.terms.shipment_date }}</div>{% endif %}
+        {% if data.terms.payment_terms %}<div class="row"><span class="lbl">Payment Terms:</span>{{ data.terms.payment_terms }}</div>{% endif %}
+        {% if data.terms.delivery_terms %}<div class="row"><span class="lbl">Delivery Terms:</span>{{ data.terms.delivery_terms }}{% if data.terms.incoterms %} ({{ data.terms.incoterms.value }}){% endif %}</div>{% endif %}
+        {% if data.terms.hs_code %}<div class="row"><span class="lbl">HS Code:</span>{{ data.terms.hs_code }}</div>{% endif %}
+        {% if data.terms.country_of_origin %}<div class="row"><span class="lbl">Country of Origin:</span>{{ data.terms.country_of_origin }}</div>{% endif %}
+      </td>
+      <td>
+        {% if data.bank %}
+          {% if data.bank.bank_name %}<div class="row"><span class="lbl">Bank:</span>{{ data.bank.bank_name }}</div>{% endif %}
+          {% if data.bank.bank_address %}<div class="row"><span class="lbl">Bank Address:</span>{{ data.bank.bank_address }}</div>{% endif %}
+          {% if data.bank.swift_code %}<div class="row"><span class="lbl">Swift Code:</span>{{ data.bank.swift_code }}</div>{% endif %}
+          {% if data.bank.account_name %}<div class="row"><span class="lbl">Account Name:</span>{{ data.bank.account_name }}</div>{% endif %}
+          {% if data.bank.account_number %}<div class="row"><span class="lbl">Account No.:</span>{{ data.bank.account_number }}</div>{% endif %}
+        {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="line-items">
+  <thead>
+    <tr>
+      <th class="col-line">Line No.</th>
+      <th class="col-desc">Description of Goods</th>
+      <th class="col-qty">{% if data.has_multi_tier and data.has_single_tier_in_moq %}Quantity / MOQ{% elif data.has_multi_tier %}MOQ{% else %}Quantity{% endif %}</th>
+      <th class="col-uom">UOM</th>
+      <th class="col-price">Unit Price<br>({{ data.currency.value }})</th>
+      <th class="col-amt">Amount<br>({{ data.currency.value }})</th>
+      <th class="col-rem">Remark</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data.items %}
+    <tr class="{% if item.price_tiers %}moq-group{% endif %}">
+      <td class="col-line">{{ item.line_no }}</td>
+      <td class="col-desc">
+        {% if item.part_number %}<div class="pn">{{ item.part_number | highlight }}</div>{% endif %}
+        {% if item.description %}<div class="spec">{{ item.description | highlight }}</div>{% endif %}
+      </td>
+      {% if item.price_tiers %}
+      <td class="col-qty moq-stack">
+        {% for tier in item.price_tiers %}<div>{% if tier.quantity_text %}{{ tier.quantity_text }}{% else %}{{ '{:,.0f}'.format(tier.quantity) if tier.quantity == tier.quantity.to_integral_value() else '{:,}'.format(tier.quantity) }}{% endif %}</div>{% endfor %}
+      </td>
+      <td class="col-uom moq-stack">
+        {% for tier in item.price_tiers %}<div>{{ tier.uom }}</div>{% endfor %}
+      </td>
+      <td class="col-price moq-stack">
+        {% for tier in item.price_tiers %}<div>{% if tier.unit_price_text %}{{ tier.unit_price_text }}{% else %}{{ '{:,.2f}'.format(tier.unit_price) }}{% endif %}</div>{% endfor %}
+      </td>
+      <td class="col-amt moq-stack">
+        {% for tier in item.price_tiers %}<div>{% if tier.amount_text or tier.unit_price_text or tier.quantity_text %}{{ tier.amount_text or 'TBD' }}{% else %}{{ '{:,.2f}'.format(tier.amount) }}{% endif %}</div>{% endfor %}
+      </td>
+      <td class="col-rem">{{ item.line_remarks or '' }}</td>
+      {% else %}
+      <td class="col-qty">{% if item.quantity_text %}{{ item.quantity_text }}{% else %}{{ '{:,.0f}'.format(item.quantity) if item.quantity == item.quantity.to_integral_value() else '{:,}'.format(item.quantity) }}{% endif %}</td>
+      <td class="col-uom">{{ item.uom }}</td>
+      <td class="col-price">{% if item.unit_price_text %}{{ item.unit_price_text }}{% else %}{{ '{:,.2f}'.format(item.unit_price) }}{% endif %}</td>
+      <td class="col-amt">{% if item.amount_text or item.unit_price_text or item.quantity_text %}{{ item.amount_text or 'TBD' }}{% else %}{{ '{:,.2f}'.format(item.amount) }}{% endif %}</td>
+      <td class="col-rem">{{ item.line_remarks or '' }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    {% if (not data.has_multi_tier) or data.has_single_tier_in_moq %}
+    {% if data.discount_amount and data.discount_amount > 0 %}
+    <tr class="charge-row">
+      <td colspan="2" class="total-label">Discount{% if data.discount_reason %} <span style="font-weight:400;color:#555;font-size:7pt;">— {{ data.discount_reason }}</span>{% endif %}</td>
+      <td class="col-qty"></td>
+      <td class="col-uom">{{ data.currency.value }}</td>
+      <td colspan="2" class="col-amt">- {{ '{:,.2f}'.format(data.discount_amount) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% endif %}
+    {% if data.shipping_fee and data.shipping_fee > 0 %}
+    <tr class="charge-row">
+      <td colspan="2" class="total-label">Shipping</td>
+      <td class="col-qty"></td>
+      <td class="col-uom">{{ data.currency.value }}</td>
+      <td colspan="2" class="col-amt">{{ '{:,.2f}'.format(data.shipping_fee) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% endif %}
+    <tr class="total-row">
+      <td colspan="2" class="total-label">{% if data.has_single_tier_in_moq %}SUBTOTAL (fixed-price items){% else %}TOTAL{% endif %}</td>
+      <td class="col-qty">{% if not data.has_multi_tier %}{{ '{:,.0f}'.format(data.items | sum(attribute='quantity')) }}{% endif %}</td>
+      <td class="col-uom">{{ data.currency.value }}</td>
+      <td colspan="2" class="col-amt">{{ '{:,.2f}'.format(data.total) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% if data.package %}
+<table class="package-table">
+  <thead>
+    <tr><th colspan="5" class="pkg-title">Package Details</th></tr>
+    <tr>
+      <th class="pkg-no">No.</th>
+      <th>Packages</th>
+      <th>Gross (kg)</th>
+      <th>Net (kg)</th>
+      <th>Dimensions (L &times; W &times; H, cm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if data.package.lines %}
+      {% for ln in data.package.lines %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ (ln.quantity ~ ' Box') if ln.quantity else '' }}</td>
+        <td>{{ '{:,.1f}'.format(ln.gross_weight) if ln.gross_weight is not none else '' }}</td>
+        <td>{{ '{:,.1f}'.format(ln.net_weight) if ln.net_weight is not none else '' }}</td>
+        <td>{{ ln.dimensions or '' }}</td>
+      </tr>
+      {% endfor %}
+      <tr class="pkg-total">
+        <td>Total</td>
+        <td>{{ data.package.boxes or 0 }} Box</td>
+        <td>{{ '{:,.1f}'.format(data.package.gross_weight) if data.package.gross_weight is not none else '' }}</td>
+        <td>{{ '{:,.1f}'.format(data.package.net_weight) if data.package.net_weight is not none else '' }}</td>
+        <td></td>
+      </tr>
+    {% else %}
+      <tr>
+        <td>1</td>
+        <td>{{ (data.package.boxes ~ ' Box') if data.package.boxes else '' }}</td>
+        <td>{{ '{:,.1f}'.format(data.package.gross_weight) if data.package.gross_weight is not none else '' }}</td>
+        <td>{{ '{:,.1f}'.format(data.package.net_weight) if data.package.net_weight is not none else '' }}</td>
+        <td>{{ data.package.dimensions or '' }}</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+<div class="pkg-summary">Total Qty: <strong>{{ '{:,.0f}'.format(data.package.total_quantity) if data.package.total_quantity else '-' }}</strong> &nbsp;&nbsp;&nbsp; Invoice Total: <strong>{{ data.currency.value }} {{ '{:,.2f}'.format(data.total) }}</strong></div>
+{% endif %}
+
+{% if data.has_multi_tier and data.has_single_tier_in_moq %}
+<div class="tbd-note">* MOQ items show per-quantity pricing and are not summed into the subtotal.</div>
+{% endif %}
+{% if data.has_tbd %}
+<div class="tbd-note">* TBD items are not included in the total.</div>
+{% endif %}
+
+{% if data.terms.remarks %}
+<div style="margin-top:8pt;font-size:8pt;color:#333;line-height:1.45;white-space:pre-line;"><span style="font-weight:700;">Remarks:</span> {{ data.terms.remarks }}</div>
+{% endif %}
+
+{% if data.terms.statement_of_origin %}
+{% set so = data.terms.statement_of_origin %}
+<table style="width:100%;border-collapse:collapse;margin-top:10pt;font-size:8pt;table-layout:fixed;">
+  <tr>
+    <td style="width:55%;border:0.5pt solid #000;padding:5pt 7pt;vertical-align:top;">
+      <div style="font-weight:700;margin-bottom:3pt;">Statement of Origin</div>
+      <div style="color:#1a5fb4;line-height:1.45;">{{ so.text }}</div>
+    </td>
+    <td style="border:0.5pt solid #000;padding:4pt 6pt 2pt;vertical-align:top;">
+      <div style="font-weight:700;margin-bottom:1pt;">Signed by</div>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <tr>
+          <td style="width:50%;height:26pt;text-align:center;vertical-align:bottom;overflow:hidden;">{% if so.coo_sig %}<img src="{{ so.coo_sig }}" style="display:block;margin:0 auto;max-height:20pt;max-width:70%;">{% endif %}</td>
+          <td style="width:50%;height:26pt;text-align:center;vertical-align:bottom;overflow:hidden;">{% if so.sales_sig %}<img src="{{ so.sales_sig }}" style="display:block;margin:0 auto;max-height:17pt;max-width:74%;">{% endif %}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="border:0.5pt solid #000;padding:5pt 7pt;">
+      <span style="font-weight:700;">Place and Date</span>
+      &nbsp;&nbsp;{{ so.place }}{% if so.date %}&nbsp;&nbsp;&nbsp;{{ so.date }}{% endif %}
+    </td>
+    <td style="border:0.5pt solid #000;padding:4pt 6pt;">
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <tr>
+          <td style="width:50%;text-align:center;font-weight:700;line-height:1.25;">{{ so.coo_title }}</td>
+          <td style="width:50%;text-align:center;font-weight:700;line-height:1.25;">{{ so.sales_title }}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endif %}
+
+<table class="signature-table">
+  <thead>
+    <tr><th>Signed (The Seller)</th><th>&nbsp;</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        {% if not data.stamp_omitted %}
+          <img class="sig-stamp" src="assets/stamp.png" alt="seal">
+        {% endif %}
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr class="sig-caption">
+      <td>President of {{ data.company.name_en }}</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

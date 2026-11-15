@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ form_name }} - {{ doc.title }}</title>
+<style>
+  :root{
+    --ink:#222; --line:#222; --cell:#cfcfcf; --soft:#e5e5e5;
+    --label:#f5f6f7; --muted:#8a8f98; --red:#C0392B; --accent:#2c3e50; --bg:#eceef0;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; padding:24px; background:var(--bg);
+    font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",AppleGothic,sans-serif;
+    color:var(--ink); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+  .toolbar{ width:794px; max-width:100%; margin:0 auto 16px; display:flex; gap:8px; justify-content:flex-end; }
+  .toolbar button{ border:1px solid #ccc; background:#fff; padding:8px 16px; border-radius:6px;
+    cursor:pointer; font-size:13px; }
+  .toolbar button:hover{background:#f0f0f0;}
+
+  .page{ width:794px; min-height:1123px; margin:0 auto; background:#fff; padding:46px 52px 40px;
+    box-shadow:0 2px 16px rgba(0,0,0,.14); position:relative; display:flex; flex-direction:column; }
+
+  /* 결재란 (우상단) */
+  .approval-row{ display:flex; justify-content:flex-end; }
+  .approval-box{ border-collapse:collapse; font-size:12px; }
+  .approval-box td{ border:1px solid var(--cell); text-align:center; }
+  .approval-box .side{ writing-mode:vertical-rl; text-orientation:upright; background:var(--label);
+    font-weight:700; letter-spacing:2px; width:24px; color:#333; }
+  .approval-box .role{ height:24px; background:var(--label); font-weight:700; width:90px;
+    font-size:11px; color:#333; }
+  .approval-box .sign{ height:80px; vertical-align:middle; width:90px; }
+  .approval-box .sign svg{ width:64px; height:64px; }
+  .approval-box .name{ height:24px; font-size:11px; color:#555; }
+  .approval-box .pending{ color:#c2c2c2; font-size:11px; }
+
+  /* 양식명 (중앙 대형) */
+  .form-title{ text-align:center; font-size:34px; font-weight:800; letter-spacing:14px;
+    color:var(--ink); margin:6px 0 28px; padding-left:14px; }
+
+  /* 메타 표 */
+  .meta{ border-collapse:collapse; width:100%; font-size:12.5px; margin-bottom:6px; }
+  .meta td{ border:1px solid var(--cell); padding:8px 12px; }
+  .meta .label{ background:var(--label); font-weight:700; text-align:center; color:#333;
+    width:96px; white-space:nowrap; }
+  .meta .title-row td{ font-weight:700; }
+  .meta .title-row .val{ font-size:14px; }
+
+  /* 본문 */
+  .lead{ margin:24px 2px 6px; font-size:13.5px; line-height:1.8; }
+  .body{ font-size:13.5px; line-height:1.85; }
+  .body h3{ font-size:14px; font-weight:700; margin:20px 0 8px; }
+  table.kv{ width:100%; border-collapse:collapse; margin:6px 0 4px; }
+  table.kv td{ border:1px solid var(--soft); padding:8px 11px; font-size:13px; vertical-align:top; }
+  table.kv .k{ background:var(--label); font-weight:700; width:140px; color:#333; }
+  .content-html{ font-size:13.5px; line-height:1.85; }
+  .content-html img.markup-img, .content-html img{ max-width:100%; height:auto; margin:4px 0; page-break-inside:avoid; }
+  .content-html table{ border-collapse:collapse; width:100%; margin:6px 0; }
+  .content-html th,.content-html td{ border:1px solid var(--cell); padding:7px 10px; }
+  .content-html th{ background:var(--label); font-weight:700; }
+  .content-html h1,.content-html h2,.content-html h3{ font-size:14px; font-weight:700; margin:16px 0 6px; }
+
+  .ref-line{ margin-top:14px; font-size:12.5px; color:#444; }
+  .attach-list{ margin:6px 0 0; padding-left:18px; font-size:12.5px; }
+  .attach-list li{ margin:2px 0; }
+  .attach-img{ margin-top:12px; page-break-inside:avoid; }
+  .attach-img img{ max-width:100%; border:1px solid var(--soft); }
+  .attach-cap{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+  /* 마무리 / 회사명 — 페이지 하단 고정 */
+  .closing{ text-align:center; margin-top:auto; padding-top:30px; }
+  .closing .statement{ font-size:13.5px; }
+  .closing .date{ font-size:15px; font-weight:700; letter-spacing:1px; margin:18px 0 4px; }
+  .company-name{ text-align:center; font-size:26px; font-weight:800; letter-spacing:12px;
+    margin:16px 0 10px; padding-left:12px; color:var(--ink); }
+
+  /* 처리 이력 (옵션) */
+  .history{ margin-top:24px; font-size:11px; color:var(--muted);
+    border-top:1px dashed #ccc; padding-top:10px; }
+  .history .row{ display:flex; gap:10px; padding:2px 0; }
+  .history .t{ width:130px; color:#9aa0a6; }
+
+  /* 푸터 */
+  .footer{ margin-top:14px; padding-top:12px; border-top:1px solid var(--cell);
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:10.5px; color:var(--muted); }
+  .footer .mid{ flex:1; text-align:center; }
+  .badge-corrected{ display:inline-block; margin-left:8px; padding:1px 7px; border:1px solid var(--red);
+    color:var(--red); border-radius:3px; font-size:10px; font-weight:700; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .toolbar{ display:none; }
+    /* 하단 여백을 키워 고정 푸터 자리 확보 */
+    @page{ size:A4; margin:14mm 14mm 18mm; }
+    /* 인쇄는 자연 흐름 — min-height/auto-margin 으로 빈 페이지를 강제하지 않음 */
+    .page{ box-shadow:none; width:auto; margin:0; padding:0; min-height:auto; }
+    .closing{ margin-top:0; padding-top:30px; }
+    /* 푸터: 모든 페이지 하단에 고정 반복 (크로미움 계열은 position:fixed 를 매 페이지 인쇄) */
+    .footer{ position:fixed; left:0; right:0; bottom:0; margin:0;
+      padding:5px 14mm 0; background:#fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">인쇄 / PDF 저장</button>
+</div>
+
+<div class="page">
+
+  <!-- 결재란 -->
+  <div class="approval-row">
+    <table class="approval-box">
+      <tr>
+        <td class="side" rowspan="3">결재</td>
+        {% for c in cells %}<td class="role">{{ c.role }}</td>{% endfor %}
+      </tr>
+      <tr>
+        {% for c in cells %}
+        <td class="sign">
+          {% if c.seal_svg %}{{ c.seal_svg|safe }}
+          {% elif c.pending %}<span class="pending">대기</span>{% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for c in cells %}<td class="name">{{ c.name }}</td>{% endfor %}
+      </tr>
+    </table>
+  </div>
+
+  <!-- 양식명 -->
+  <div class="form-title">{{ form_name }}</div>
+
+  <!-- 메타 표 -->
+  <table class="meta">
+    <tr>
+      {% if show_doc_number %}
+      <td class="label">문서번호</td><td>{{ doc.doc_number }}</td>
+      <td class="label">기안일자</td><td>{{ drafted_at or created_at }}</td>
+      {% else %}
+      <td class="label">기안일자</td><td colspan="3">{{ drafted_at or created_at }}</td>
+      {% endif %}
+    </tr>
+    <tr>
+      <td class="label">기안부서</td><td>{{ drafter_dept or '-' }}</td>
+      <td class="label">기안자</td>
+      <td>{{ drafter_name }}{% if drafter_position %} {{ drafter_position }}{% endif %}</td>
+    </tr>
+    {% if project_name %}
+    <tr>
+      <td class="label">프로젝트</td><td colspan="3">{{ project_name }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td class="label">상태</td><td colspan="3">{{ status_label }}</td>
+    </tr>
+    <tr class="title-row">
+      <td class="label">제목</td><td class="val" colspan="3">{{ doc.title }}</td>
+    </tr>
+  </table>
+
+  <!-- 본문 -->
+  <div class="body">
+    {% if form_rows %}
+    <h3>기안 내용</h3>
+    <table class="kv">
+      {% for r in form_rows %}
+      <tr><td class="k">{{ r.label }}</td><td style="white-space:pre-line">{{ r.value }}</td></tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if doc.content %}
+    <div class="content-html">{{ content_html }}</div>
+    {% endif %}
+
+    {% if references and show_references %}
+    <div class="ref-line"><b>참조</b> :
+      {% for r in references %}{{ r.name }}{% if r.position %} {{ r.position }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if attachments and show_attachments %}
+    <h3>첨부</h3>
+    <ul class="attach-list">
+      {% for a in attachments %}<li>{{ a.original_name }}{% if a.is_pdf %} · PDF{% endif %}</li>{% endfor %}
+    </ul>
+    {% for a in attachments %}{% if a.data_uri %}
+    <div class="attach-img"><img src="{{ a.data_uri }}" alt="{{ a.original_name }}"/><div class="attach-cap">{{ a.original_name }}</div></div>
+    {% endif %}{% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- 처리 이력 (옵션) -->
+  {% if history and show_history %}
+  <div class="history">
+    {% for h in history %}
+    <div class="row"><span class="t">{{ h.time }}</span><span>{{ h.label }} — {{ h.actor }}{% if h.comment %} · {{ h.comment }}{% endif %}</span></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- 마무리 / 회사명 (하단 고정) -->
+  <div class="closing">
+    <div class="statement">위와 같이 기안하오니 검토 후 결재하여 주시기 바랍니다.</div>
+    {% if drafted_at_kr %}<div class="date">{{ drafted_at_kr }}</div>{% endif %}
+  </div>
+  <div class="company-name">{{ company_name }}</div>
+
+  <!-- 푸터 -->
+  <div class="footer" style="justify-content:center; text-align:center;">
+    <span class="mid">{{ company_name }}{% if show_print_date %} · 출력일 {{ print_date }}{% endif %}</span>
+  </div>
+
+</div>
+
+</body>
+</html>

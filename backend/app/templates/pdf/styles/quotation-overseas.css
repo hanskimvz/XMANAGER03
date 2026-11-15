@@ -1,0 +1,263 @@
+/* ─────────────────────────────────────
+   해외(영문) 견적서/PI — 컴팩트 타이포 (페이지 수 절감)
+   ───────────────────────────────────── */
+
+/* 강조 마크업 3종 */
+.highlight-critical { color: #c00; font-weight: 700; }
+.highlight-warning  { background-color: #fff3cd; padding: 0 2pt; }
+.highlight-spec     { text-decoration: underline; text-decoration-color: #c00; text-decoration-thickness: 1pt; }
+
+/* 헤더: 좌측 로고 + 우측 회사 정보 */
+.overseas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3pt;
+}
+.overseas-header .logo-block img {
+  height: 28pt;
+}
+.overseas-header .company-block {
+  text-align: right;
+  font-size: 8pt;
+  line-height: 1.25;
+  color: #222;
+}
+
+/* 중앙 큰 제목 */
+.doc-title {
+  text-align: center;
+  font-size: 18pt;
+  font-weight: 700;
+  margin: 4pt 0 6pt 0;
+  letter-spacing: 0.5pt;
+}
+
+/* 메타 (PI No / PI Date / PO No / Prepared by / Email) */
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8pt;
+  margin-bottom: 3pt;
+}
+.meta-table th, .meta-table td {
+  border: 1pt solid #888;
+  padding: 2.5pt 5pt;
+  text-align: left;
+  vertical-align: middle;
+}
+.meta-table th {
+  background: #f4f4f4;
+  font-weight: 700;
+  width: 11%;
+}
+.meta-table td { width: 39%; }
+
+/* BUYER / SHIP TO + Terms / Bank 박스 */
+.parties-table,
+.terms-bank-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8pt;
+  margin-bottom: 3pt;
+}
+.parties-table th,
+.terms-bank-table th {
+  background: #1a3a6e;
+  color: #fff;
+  border: 1pt solid #1a3a6e;
+  padding: 2.5pt 5pt;
+  text-align: left;
+  font-weight: 700;
+  width: 50%;
+}
+.parties-table td,
+.terms-bank-table td {
+  border: 1pt solid #888;
+  padding: 3pt 5pt;
+  vertical-align: top;
+  width: 50%;
+}
+.parties-table .row,
+.terms-bank-table .row {
+  display: flex;
+  margin-bottom: 0.5pt;
+  font-size: 7.5pt;
+  line-height: 1.25;
+  /* 사용자가 입력한 줄바꿈(주소 등)을 그대로 보존 */
+  white-space: pre-line;
+}
+.parties-table .lbl,
+.terms-bank-table .lbl {
+  flex: 0 0 64pt;
+  font-weight: 700;
+  color: #333;
+}
+
+/* CI 포장 명세 (Package Details) */
+table.package-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.5pt;
+  margin-top: 3pt;
+  margin-bottom: 3pt;
+}
+table.package-table th {
+  background: #1a3a6e;
+  color: #fff;
+  border: 1pt solid #1a3a6e;
+  padding: 2.5pt 4pt;
+  text-align: center;
+  font-weight: 700;
+}
+table.package-table th.pkg-title {
+  text-align: left;
+  font-size: 8pt;
+}
+table.package-table th.pkg-no {
+  width: 8%;
+}
+table.package-table td {
+  border: 1pt solid #888;
+  padding: 3pt 4pt;
+  text-align: center;
+  vertical-align: middle;
+}
+table.package-table tr.pkg-total td {
+  font-weight: 700;
+  background: #eef2f8;
+}
+.pkg-summary {
+  text-align: right;
+  font-size: 8pt;
+  margin-top: 2pt;
+  margin-bottom: 3pt;
+}
+
+/* 품목 테이블 — 컴팩트 */
+table.line-items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8pt;
+  margin-bottom: 6pt;
+}
+table.line-items thead th {
+  background: #f4f4f4;
+  border: 1pt solid #888;
+  padding: 2.5pt 5pt;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+table.line-items tbody td {
+  border: 1pt solid #888;
+  padding: 2.5pt 5pt;
+  vertical-align: top;
+}
+/* 품목이 페이지 경계에서 쪼개지지 않도록 */
+table.line-items tbody tr {
+  page-break-inside: avoid;
+}
+table.line-items .col-line  { width: 5%;  text-align: center; }
+table.line-items .col-desc  { width: 42%; }
+table.line-items .col-qty   { width: 7%;  text-align: right; }
+table.line-items .col-uom   { width: 5%;  text-align: center; }
+table.line-items .col-price { width: 11%; text-align: right; white-space: nowrap; }
+table.line-items .col-amt   { width: 12%; text-align: right; white-space: nowrap; }
+table.line-items .col-rem   { width: 18%; font-size: 7.5pt; color: #333; white-space: pre-line; word-break: break-word; }
+table.line-items .pn {
+  font-weight: 700;
+  color: #1a3a6e;
+  font-size: 8.5pt;
+}
+table.line-items .spec {
+  white-space: pre-line;
+  margin-top: 0.5pt;
+  color: #333;
+  font-size: 7.5pt;
+  line-height: 1.2;
+}
+table.line-items .rem {
+  margin-top: 1pt;
+  color: #666;
+  font-size: 7pt;
+  font-style: italic;
+}
+table.line-items .total-row td {
+  background: #f4f4f4;
+  font-weight: 700;
+}
+table.line-items .total-label {
+  text-align: right;
+  padding-right: 10pt;
+}
+
+/* TBD 등 텍스트 오버라이드 항목 안내 각주 */
+.tbd-note {
+  margin-top: 4pt;
+  font-size: 7.5pt;
+  font-style: italic;
+  color: #666;
+}
+
+/* MOQ 그룹 행: 같은 품목의 수량 구간별 단가를 셀 안에 스택 */
+table.line-items tr.moq-group td {
+  padding-top: 6pt;
+  padding-bottom: 6pt;
+  vertical-align: middle;
+}
+table.line-items td.moq-stack {
+  padding-top: 4pt;
+  padding-bottom: 4pt;
+}
+table.line-items td.moq-stack div {
+  padding: 2.5pt 0;
+  line-height: 1.25;
+}
+table.line-items td.moq-stack div + div {
+  border-top: 1pt dotted #bbb;
+}
+
+/* 서명 */
+.signature-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  margin-top: 10pt;
+}
+.signature-table thead th {
+  border-bottom: 1pt solid #222;
+  padding: 3pt 5pt;
+  text-align: left;
+  font-weight: 700;
+  width: 50%;
+}
+.signature-table tbody td {
+  height: 44pt;
+  vertical-align: top;
+  padding: 4pt 5pt;
+}
+.signature-table .sig-stamp {
+  height: 40pt;
+}
+.signature-table .sig-caption td {
+  height: auto;
+  border-top: 1pt solid #222;
+  padding-top: 3pt;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+/* ── 오토핏 컴팩트 모드 ──
+   정상 렌더가 "아슬아슬하게" 2페이지로 넘칠 때만(서명 블록만 다음 장으로 밀리는 등)
+   생성기가 body.compact 로 재렌더한다. 세로 여백만 줄여 1페이지로 되돌린다.
+   품목이 많아 컴팩트로도 2페이지면 이 스타일은 적용돼도 결과가 2페이지 → 정상본 사용. */
+body.compact table.line-items thead th,
+body.compact table.line-items tbody td { padding-top: 1.5pt; padding-bottom: 1.5pt; }
+body.compact table.line-items .spec { line-height: 1.12; margin-top: 0.3pt; }
+body.compact table.line-items .rem { margin-top: 0.3pt; }
+body.compact table.line-items { margin-bottom: 3pt; }
+body.compact .signature-table { margin-top: 4pt; }
+body.compact .signature-table tbody td { height: 28pt; }
+body.compact .signature-table .sig-stamp { height: 28pt; }
+body.compact h2 { margin: 4pt 0 2pt 0; }

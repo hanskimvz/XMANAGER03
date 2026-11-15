@@ -1,0 +1,526 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1608" height="1137" viewBox="0 0 1608 1137" font-family="'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif" data-print="a4">
+<rect width="1608" height="1137" fill="#ffffff"/>
+<g transform="translate(64.0,107.5)">
+<text x="24" y="32" font-size="17" font-weight="700" fill="#1d2430">X-Manager 데이터베이스 ERD — 부품·BOM·단가·공정</text>
+<text x="24" y="52" font-size="11.5" fill="#6b7280">운영 DB(PostgreSQL 18) · 전체 76개 테이블 중 설계 데이터 파이프라인 관련 12개 발췌</text>
+<g class="tbl"><rect x="24" y="80" width="290" height="135" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M24,85 a5,5 0 0 1 5,-5 h280 a5,5 0 0 1 5,5 v29 h-290 z" fill="#23395d"/>
+<text x="34" y="102" font-size="13.5" font-weight="700" fill="#fff">part_attachment</text>
+<text x="304" y="102" font-size="11.5" fill="#dbe4f0" text-anchor="end">부품 첨부·도면</text>
+<rect x="31" y="117" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="42.0" y="127.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="59" y="127.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="306" y="127.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="25" y="133" width="288" height="19" fill="#f6f8fb"/>
+<rect x="31" y="136" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="42.0" y="146.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="59" y="146.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_id</text>
+<text x="306" y="146.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="111.80000000000001" y="146.5" font-size="10.4" fill="#6b7280">부품</text>
+<text x="59" y="165.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">kind</text>
+<text x="306" y="165.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="92.6" y="165.5" font-size="10.4" fill="#6b7280">종류</text>
+<rect x="25" y="171" width="288" height="19" fill="#f6f8fb"/>
+<text x="59" y="184.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">filename</text>
+<text x="306" y="184.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(300)</text>
+<text x="118.2" y="184.5" font-size="10.4" fill="#6b7280">파일명</text>
+<text x="59" y="203.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">filepath</text>
+<text x="306" y="203.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(500)</text>
+<text x="118.2" y="203.5" font-size="10.4" fill="#6b7280">저장 경로</text>
+</g>
+<g class="tbl"><rect x="24" y="318" width="290" height="154" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M24,323 a5,5 0 0 1 5,-5 h280 a5,5 0 0 1 5,5 v29 h-290 z" fill="#23395d"/>
+<text x="34" y="340" font-size="13.5" font-weight="700" fill="#fff">exchange_rate</text>
+<text x="304" y="340" font-size="11.5" fill="#dbe4f0" text-anchor="end">환율 (통화 환산)</text>
+<rect x="31" y="355" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="42.0" y="365.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="59" y="365.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="306" y="365.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="25" y="371" width="288" height="19" fill="#f6f8fb"/>
+<text x="59" y="384.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">currency_code</text>
+<text x="306" y="384.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(10)</text>
+<text x="150.2" y="384.5" font-size="10.4" fill="#6b7280">통화</text>
+<text x="59" y="403.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">rate</text>
+<text x="306" y="403.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(12,4)</text>
+<text x="92.6" y="403.5" font-size="10.4" fill="#6b7280">환율</text>
+<rect x="25" y="409" width="288" height="19" fill="#f6f8fb"/>
+<text x="59" y="422.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">effective_date</text>
+<text x="306" y="422.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamptz</text>
+<text x="156.60000000000002" y="422.5" font-size="10.4" fill="#6b7280">적용일</text>
+<text x="59" y="441.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">expiry_date</text>
+<text x="306" y="441.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamptz</text>
+<text x="137.4" y="441.5" font-size="10.4" fill="#6b7280">만료일</text>
+<rect x="25" y="447" width="288" height="19" fill="#f6f8fb"/>
+<text x="59" y="460.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">source</text>
+<text x="306" y="460.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="105.4" y="460.5" font-size="10.4" fill="#6b7280">출처</text>
+</g>
+<g class="tbl"><rect x="356" y="80" width="300" height="116" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M356,85 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="366" y="102" font-size="13.5" font-weight="700" fill="#fff">supplier</text>
+<text x="646" y="102" font-size="11.5" fill="#dbe4f0" text-anchor="end">공급업체</text>
+<rect x="363" y="117" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="374.0" y="127.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="391" y="127.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="648" y="127.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="357" y="133" width="298" height="19" fill="#f6f8fb"/>
+<rect x="363" y="136" width="22" height="13" rx="3" fill="#e6e8ec"/>
+<text x="374.0" y="146.2" font-size="8.6" font-weight="700" fill="#3b4250" text-anchor="middle">UQ</text>
+<text x="391" y="146.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">supplier_code</text>
+<text x="648" y="146.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(50)</text>
+<text x="482.2" y="146.5" font-size="10.4" fill="#6b7280">코드</text>
+<text x="391" y="165.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">supplier_name</text>
+<text x="648" y="165.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(200)</text>
+<text x="482.2" y="165.5" font-size="10.4" fill="#6b7280">업체명</text>
+<rect x="357" y="171" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="184.5" font-size="11" fill="#4b5563" font-style="italic">+ 연락처·거래조건 등<tspan fill="#6b7280">  </tspan></text>
+</g>
+<g class="tbl"><rect x="356" y="232" width="300" height="268" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M356,237 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="366" y="254" font-size="13.5" font-weight="700" fill="#fff">price_history</text>
+<text x="646" y="254" font-size="11.5" fill="#dbe4f0" text-anchor="end">단가 이력</text>
+<rect x="363" y="269" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="374.0" y="279.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="391" y="279.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="648" y="279.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="357" y="285" width="298" height="19" fill="#f6f8fb"/>
+<rect x="363" y="288" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="374.0" y="298.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="391" y="298.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_id</text>
+<text x="648" y="298.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="443.8" y="298.5" font-size="10.4" fill="#6b7280">부품</text>
+<text x="391" y="317.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">price_type</text>
+<text x="648" y="317.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="463.0" y="317.5" font-size="10.4" fill="#6b7280">유형</text>
+<rect x="357" y="323" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="336.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">unit_price</text>
+<text x="648" y="336.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,4)</text>
+<text x="463.0" y="336.5" font-size="10.4" fill="#6b7280">단가</text>
+<text x="391" y="355.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">currency</text>
+<text x="648" y="355.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(10)</text>
+<text x="450.2" y="355.5" font-size="10.4" fill="#6b7280">통화</text>
+<rect x="357" y="361" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="374.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">exchange_rate</text>
+<text x="648" y="374.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(12,4)</text>
+<text x="482.2" y="374.5" font-size="10.4" fill="#6b7280">환율</text>
+<text x="391" y="393.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">unit_price_krw</text>
+<text x="648" y="393.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,4)</text>
+<text x="488.6" y="393.5" font-size="10.4" fill="#6b7280">원화</text>
+<rect x="357" y="399" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="412.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">quantity</text>
+<text x="648" y="412.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,3)</text>
+<text x="450.2" y="412.5" font-size="10.4" fill="#6b7280">수량</text>
+<rect x="363" y="421" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="374.0" y="431.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="391" y="431.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">supplier_id</text>
+<text x="648" y="431.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="469.4" y="431.5" font-size="10.4" fill="#6b7280">공급</text>
+<rect x="357" y="437" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="450.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">reference_type</text>
+<text x="648" y="450.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(30)</text>
+<text x="488.6" y="450.5" font-size="10.4" fill="#6b7280">출처</text>
+<text x="391" y="469.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">reference_id</text>
+<text x="648" y="469.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(50)</text>
+<text x="475.8" y="469.5" font-size="10.4" fill="#6b7280">문서번호</text>
+<rect x="357" y="475" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="488.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">reference_date</text>
+<text x="648" y="488.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamptz</text>
+<text x="488.6" y="488.5" font-size="10.4" fill="#6b7280">일자</text>
+</g>
+<g class="tbl"><rect x="356" y="548" width="300" height="154" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M356,553 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="366" y="570" font-size="13.5" font-weight="700" fill="#fff">inventory</text>
+<text x="646" y="570" font-size="11.5" fill="#dbe4f0" text-anchor="end">재고</text>
+<rect x="363" y="585" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="374.0" y="595.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="391" y="595.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="648" y="595.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="357" y="601" width="298" height="19" fill="#f6f8fb"/>
+<rect x="363" y="604" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="374.0" y="614.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="391" y="614.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_id</text>
+<text x="648" y="614.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="443.8" y="614.5" font-size="10.4" fill="#6b7280">부품</text>
+<text x="391" y="633.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">quantity_on_hand</text>
+<text x="648" y="633.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,3)</text>
+<text x="501.4" y="633.5" font-size="10.4" fill="#6b7280">현재고</text>
+<rect x="357" y="639" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="652.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">quantity_available</text>
+<text x="648" y="652.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,3)</text>
+<text x="514.2" y="652.5" font-size="10.4" fill="#6b7280">가용</text>
+<text x="391" y="671.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">unit_cost</text>
+<text x="648" y="671.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,2)</text>
+<text x="456.6" y="671.5" font-size="10.4" fill="#6b7280">단가</text>
+<rect x="357" y="677" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="690.5" font-size="11" fill="#4b5563" font-style="italic">+ 보관위치·재주문점 등<tspan fill="#6b7280">  </tspan></text>
+</g>
+<g class="tbl"><rect x="700" y="80" width="340" height="458" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M700,85 a5,5 0 0 1 5,-5 h330 a5,5 0 0 1 5,5 v29 h-340 z" fill="#23395d"/>
+<text x="710" y="102" font-size="13.5" font-weight="700" fill="#fff">parts</text>
+<text x="1030" y="102" font-size="11.5" fill="#dbe4f0" text-anchor="end">부품 마스터</text>
+<rect x="707" y="117" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="718.0" y="127.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="735" y="127.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="1032" y="127.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="701" y="133" width="338" height="19" fill="#f6f8fb"/>
+<rect x="707" y="136" width="22" height="13" rx="3" fill="#e6e8ec"/>
+<text x="718.0" y="146.2" font-size="8.6" font-weight="700" fill="#3b4250" text-anchor="middle">UQ</text>
+<text x="735" y="146.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_uid</text>
+<text x="1032" y="146.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(12)</text>
+<text x="794.2" y="146.5" font-size="10.4" fill="#6b7280">고유 ID</text>
+<rect x="707" y="155" width="22" height="13" rx="3" fill="#e6e8ec"/>
+<text x="718.0" y="165.2" font-size="8.6" font-weight="700" fill="#3b4250" text-anchor="middle">UQ</text>
+<text x="735" y="165.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_number</text>
+<text x="1032" y="165.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(100)</text>
+<text x="813.4" y="165.5" font-size="10.4" fill="#6b7280">품번(시스템)</text>
+<rect x="701" y="171" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="184.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_number_display</text>
+<text x="1032" y="184.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(100)</text>
+<text x="864.6" y="184.5" font-size="10.4" fill="#6b7280">품번(표시)</text>
+<text x="735" y="203.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_name</text>
+<text x="1032" y="203.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(200)</text>
+<text x="800.6" y="203.5" font-size="10.4" fill="#6b7280">부품명</text>
+<rect x="701" y="209" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="222.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">specification</text>
+<text x="1032" y="222.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(500)</text>
+<text x="826.2" y="222.5" font-size="10.4" fill="#6b7280">규격</text>
+<rect x="707" y="231" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="718.0" y="241.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="735" y="241.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">unit_id</text>
+<text x="1032" y="241.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="787.8" y="241.5" font-size="10.4" fill="#6b7280">단위</text>
+<rect x="701" y="247" width="338" height="19" fill="#f6f8fb"/>
+<rect x="707" y="250" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="718.0" y="260.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="735" y="260.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">supplier_id</text>
+<text x="1032" y="260.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="813.4" y="260.5" font-size="10.4" fill="#6b7280">주 공급</text>
+<text x="735" y="279.5" font-size="11" fill="#4b5563" font-style="italic">분류·품번 코드 FK 13개<tspan fill="#6b7280">  → 그림 B</tspan></text>
+<rect x="701" y="285" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="298.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">version</text>
+<text x="1032" y="298.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(10)</text>
+<text x="787.8" y="298.5" font-size="10.4" fill="#6b7280">버전</text>
+<text x="735" y="317.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">revision</text>
+<text x="1032" y="317.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="794.2" y="317.5" font-size="10.4" fill="#6b7280">리비전</text>
+<rect x="701" y="323" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="336.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">standard_price</text>
+<text x="1032" y="336.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,4)</text>
+<text x="832.6" y="336.5" font-size="10.4" fill="#6b7280">기준단가</text>
+<text x="735" y="355.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">latest_price</text>
+<text x="1032" y="355.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,4)</text>
+<text x="819.8" y="355.5" font-size="10.4" fill="#6b7280">최근단가</text>
+<rect x="701" y="361" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="374.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">inventory_avg_price</text>
+<text x="1032" y="374.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,4)</text>
+<text x="864.6" y="374.5" font-size="10.4" fill="#6b7280">이동평균</text>
+<text x="735" y="393.5" font-size="11" fill="#4b5563" font-style="italic">avg_price_30d · 90d · last5 · last10<tspan fill="#6b7280">  기간·건수 평균</tspan></text>
+<rect x="701" y="399" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="412.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">calculated_cost</text>
+<text x="1032" y="412.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,4)</text>
+<text x="839.0" y="412.5" font-size="10.4" fill="#6b7280">BOM 원가</text>
+<text x="735" y="431.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">approval_status</text>
+<text x="1032" y="431.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="839.0" y="431.5" font-size="10.4" fill="#6b7280">승인</text>
+<rect x="701" y="437" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="450.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">status</text>
+<text x="1032" y="450.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="781.4" y="450.5" font-size="10.4" fill="#6b7280">상태</text>
+<text x="735" y="469.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">is_classified</text>
+<text x="1032" y="469.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">bool</text>
+<text x="826.2" y="469.5" font-size="10.4" fill="#6b7280">분류 여부</text>
+<rect x="701" y="475" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="488.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">created_by</text>
+<text x="1032" y="488.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="807.0" y="488.5" font-size="10.4" fill="#6b7280">생성자</text>
+<text x="735" y="507.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">updated_by</text>
+<text x="1032" y="507.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="807.0" y="507.5" font-size="10.4" fill="#6b7280">수정자</text>
+<rect x="701" y="513" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="526.5" font-size="11" fill="#4b5563" font-style="italic">+ 기타 37개 컬럼<tspan fill="#6b7280">  (원가 세부·도면 파일·보호 설정 등)</tspan></text>
+</g>
+<g class="tbl"><rect x="1112" y="80" width="300" height="97" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M1112,85 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="1122" y="102" font-size="13.5" font-weight="700" fill="#fff">unit</text>
+<text x="1402" y="102" font-size="11.5" fill="#dbe4f0" text-anchor="end">단위</text>
+<rect x="1119" y="117" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="1130.0" y="127.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="1147" y="127.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="1404" y="127.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="1113" y="133" width="298" height="19" fill="#f6f8fb"/>
+<rect x="1119" y="136" width="22" height="13" rx="3" fill="#e6e8ec"/>
+<text x="1130.0" y="146.2" font-size="8.6" font-weight="700" fill="#3b4250" text-anchor="middle">UQ</text>
+<text x="1147" y="146.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">code</text>
+<text x="1404" y="146.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(10)</text>
+<text x="1180.6" y="146.5" font-size="10.4" fill="#6b7280">코드</text>
+<text x="1147" y="165.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">name_ko</text>
+<text x="1404" y="165.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(50)</text>
+<text x="1199.8" y="165.5" font-size="10.4" fill="#6b7280">이름</text>
+</g>
+<g class="tbl"><rect x="1112" y="212" width="300" height="249" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M1112,217 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="1122" y="234" font-size="13.5" font-weight="700" fill="#fff">bom</text>
+<text x="1402" y="234" font-size="11.5" fill="#dbe4f0" text-anchor="end">BOM 구성 (parts 자기참조)</text>
+<rect x="1119" y="249" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="1130.0" y="259.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="1147" y="259.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="1404" y="259.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="1113" y="265" width="298" height="19" fill="#f6f8fb"/>
+<rect x="1119" y="268" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="1130.0" y="278.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="1147" y="278.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">parent_part_id</text>
+<text x="1404" y="278.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1244.6" y="278.5" font-size="10.4" fill="#6b7280">상위</text>
+<rect x="1119" y="287" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="1130.0" y="297.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="1147" y="297.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">child_part_id</text>
+<text x="1404" y="297.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1238.2" y="297.5" font-size="10.4" fill="#6b7280">하위</text>
+<rect x="1113" y="303" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="316.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">quantity</text>
+<text x="1404" y="316.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">float8</text>
+<text x="1206.2" y="316.5" font-size="10.4" fill="#6b7280">소요량</text>
+<rect x="1119" y="325" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="1130.0" y="335.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="1147" y="335.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">unit_id</text>
+<text x="1404" y="335.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1199.8" y="335.5" font-size="10.4" fill="#6b7280">단위</text>
+<rect x="1113" y="341" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="354.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">bom_level</text>
+<text x="1404" y="354.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1212.6" y="354.5" font-size="10.4" fill="#6b7280">레벨</text>
+<text x="1147" y="373.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">sort_order</text>
+<text x="1404" y="373.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1219.0" y="373.5" font-size="10.4" fill="#6b7280">순서</text>
+<rect x="1113" y="379" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="392.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">effective_date</text>
+<text x="1404" y="392.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamp</text>
+<text x="1244.6" y="392.5" font-size="10.4" fill="#6b7280">적용 시작</text>
+<text x="1147" y="411.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">expiry_date</text>
+<text x="1404" y="411.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamp</text>
+<text x="1225.4" y="411.5" font-size="10.4" fill="#6b7280">적용 종료</text>
+<rect x="1113" y="417" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="430.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">is_active</text>
+<text x="1404" y="430.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">bool</text>
+<text x="1212.6" y="430.5" font-size="10.4" fill="#6b7280">사용</text>
+<text x="1147" y="449.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">created_by</text>
+<text x="1404" y="449.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1219.0" y="449.5" font-size="10.4" fill="#6b7280">생성자</text>
+</g>
+<g class="tbl"><rect x="1112" y="470" width="300" height="173" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M1112,475 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="1122" y="492" font-size="13.5" font-weight="700" fill="#fff">bom_change_log</text>
+<text x="1402" y="492" font-size="11.5" fill="#dbe4f0" text-anchor="end">BOM 변경 이력 (논리 참조)</text>
+<rect x="1119" y="507" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="1130.0" y="517.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="1147" y="517.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="1404" y="517.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="1113" y="523" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="536.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">action</text>
+<text x="1404" y="536.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="1193.4" y="536.5" font-size="10.4" fill="#6b7280">유형</text>
+<text x="1147" y="555.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">parent_part_id</text>
+<text x="1404" y="555.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1244.6" y="555.5" font-size="10.4" fill="#6b7280">상위</text>
+<rect x="1113" y="561" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="574.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">child_part_id</text>
+<text x="1404" y="574.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1238.2" y="574.5" font-size="10.4" fill="#6b7280">하위</text>
+<text x="1147" y="593.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">detail</text>
+<text x="1404" y="593.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">json</text>
+<text x="1193.4" y="593.5" font-size="10.4" fill="#6b7280">변경 내용</text>
+<rect x="1113" y="599" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="612.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">actor_id</text>
+<text x="1404" y="612.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1206.2" y="612.5" font-size="10.4" fill="#6b7280">작업자</text>
+<text x="1147" y="631.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">created_at</text>
+<text x="1404" y="631.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamptz</text>
+<text x="1219.0" y="631.5" font-size="10.4" fill="#6b7280">일시</text>
+</g>
+<g class="tbl"><rect x="356" y="700" width="300" height="192" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M356,705 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="366" y="722" font-size="13.5" font-weight="700" fill="#fff">work_order_process_log</text>
+<text x="646" y="722" font-size="11.5" fill="#dbe4f0" text-anchor="end">공정 실적</text>
+<rect x="363" y="737" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="374.0" y="747.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="391" y="747.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="648" y="747.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="357" y="753" width="298" height="19" fill="#f6f8fb"/>
+<rect x="363" y="756" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="374.0" y="766.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="391" y="766.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">work_order_id</text>
+<text x="648" y="766.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="482.2" y="766.5" font-size="10.4" fill="#6b7280">작업지시</text>
+<text x="391" y="785.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">process_type</text>
+<text x="648" y="785.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(30)</text>
+<text x="475.8" y="785.5" font-size="10.4" fill="#6b7280">공정 유형</text>
+<rect x="357" y="791" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="804.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">process_name</text>
+<text x="648" y="804.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(100)</text>
+<text x="475.8" y="804.5" font-size="10.4" fill="#6b7280">공정명</text>
+<text x="391" y="823.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">started_at</text>
+<text x="648" y="823.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamptz</text>
+<text x="463.0" y="823.5" font-size="10.4" fill="#6b7280">시작</text>
+<rect x="357" y="829" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="842.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">completed_at</text>
+<text x="648" y="842.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">timestamptz</text>
+<text x="475.8" y="842.5" font-size="10.4" fill="#6b7280">완료</text>
+<text x="391" y="861.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">duration_hours</text>
+<text x="648" y="861.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(10,2)</text>
+<text x="488.6" y="861.5" font-size="10.4" fill="#6b7280">소요시간</text>
+<rect x="357" y="867" width="298" height="19" fill="#f6f8fb"/>
+<text x="391" y="880.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">worker_name</text>
+<text x="648" y="880.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(100)</text>
+<text x="469.4" y="880.5" font-size="10.4" fill="#6b7280">작업자</text>
+</g>
+<g class="tbl"><rect x="700" y="700" width="340" height="192" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M700,705 a5,5 0 0 1 5,-5 h330 a5,5 0 0 1 5,5 v29 h-340 z" fill="#23395d"/>
+<text x="710" y="722" font-size="13.5" font-weight="700" fill="#fff">work_order</text>
+<text x="1030" y="722" font-size="11.5" fill="#dbe4f0" text-anchor="end">작업지시</text>
+<rect x="707" y="737" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="718.0" y="747.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="735" y="747.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="1032" y="747.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="701" y="753" width="338" height="19" fill="#f6f8fb"/>
+<rect x="707" y="756" width="22" height="13" rx="3" fill="#e6e8ec"/>
+<text x="718.0" y="766.2" font-size="8.6" font-weight="700" fill="#3b4250" text-anchor="middle">UQ</text>
+<text x="735" y="766.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">wo_number</text>
+<text x="1032" y="766.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="800.6" y="766.5" font-size="10.4" fill="#6b7280">지시번호</text>
+<rect x="707" y="775" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="718.0" y="785.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="735" y="785.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">product_part_id</text>
+<text x="1032" y="785.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="839.0" y="785.5" font-size="10.4" fill="#6b7280">완제품</text>
+<rect x="701" y="791" width="338" height="19" fill="#f6f8fb"/>
+<rect x="707" y="794" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="718.0" y="804.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="735" y="804.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">target_part_id</text>
+<text x="1032" y="804.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="832.6" y="804.5" font-size="10.4" fill="#6b7280">대상 부품</text>
+<rect x="707" y="813" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="718.0" y="823.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="735" y="823.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">parent_wo_id</text>
+<text x="1032" y="823.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="819.8" y="823.5" font-size="10.4" fill="#6b7280">상위 지시</text>
+<rect x="701" y="829" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="842.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">order_quantity</text>
+<text x="1032" y="842.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,3)</text>
+<text x="832.6" y="842.5" font-size="10.4" fill="#6b7280">지시 수량</text>
+<text x="735" y="861.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">status</text>
+<text x="1032" y="861.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">varchar(20)</text>
+<text x="781.4" y="861.5" font-size="10.4" fill="#6b7280">상태</text>
+<rect x="701" y="867" width="338" height="19" fill="#f6f8fb"/>
+<text x="735" y="880.5" font-size="11" fill="#4b5563" font-style="italic">+ 일정·포장·생산요청 FK 등<tspan fill="#6b7280">  </tspan></text>
+</g>
+<g class="tbl"><rect x="1112" y="700" width="300" height="154" rx="5" fill="#fff" stroke="#9aa6b6" stroke-width="1.1"/>
+<path d="M1112,705 a5,5 0 0 1 5,-5 h290 a5,5 0 0 1 5,5 v29 h-300 z" fill="#23395d"/>
+<text x="1122" y="722" font-size="13.5" font-weight="700" fill="#fff">work_order_item</text>
+<text x="1402" y="722" font-size="11.5" fill="#dbe4f0" text-anchor="end">소요자재 (BOM 전개)</text>
+<rect x="1119" y="737" width="22" height="13" rx="3" fill="#fde7a7"/>
+<text x="1130.0" y="747.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="1147" y="747.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">id</text>
+<text x="1404" y="747.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<rect x="1113" y="753" width="298" height="19" fill="#f6f8fb"/>
+<rect x="1119" y="756" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="1130.0" y="766.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="1147" y="766.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">work_order_id</text>
+<text x="1404" y="766.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1238.2" y="766.5" font-size="10.4" fill="#6b7280">작업지시</text>
+<rect x="1119" y="775" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="1130.0" y="785.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="1147" y="785.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">bom_id</text>
+<text x="1404" y="785.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1193.4" y="785.5" font-size="10.4" fill="#6b7280">BOM 행</text>
+<rect x="1113" y="791" width="298" height="19" fill="#f6f8fb"/>
+<rect x="1119" y="794" width="22" height="13" rx="3" fill="#dce8fb"/>
+<text x="1130.0" y="804.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="1147" y="804.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">part_id</text>
+<text x="1404" y="804.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">int</text>
+<text x="1199.8" y="804.5" font-size="10.4" fill="#6b7280">부품</text>
+<text x="1147" y="823.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">required_quantity</text>
+<text x="1404" y="823.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,3)</text>
+<text x="1263.8" y="823.5" font-size="10.4" fill="#6b7280">필요</text>
+<rect x="1113" y="829" width="298" height="19" fill="#f6f8fb"/>
+<text x="1147" y="842.5" font-size="11.3" fill="#1d2430" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">issued_quantity</text>
+<text x="1404" y="842.5" font-size="9.6" fill="#6b7280" text-anchor="end" font-family="Consolas,'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif">numeric(15,3)</text>
+<text x="1251.0" y="842.5" font-size="10.4" fill="#6b7280">출고</text>
+</g>
+<path d="M1112.0,274.5 L1040.0,274.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1099.0" y1="274.5" x2="1112.0" y2="281.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1099.0" y1="274.5" x2="1112.0" y2="274.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1099.0" y1="274.5" x2="1112.0" y2="267.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1096.0" y1="268.5" x2="1096.0" y2="280.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1046.0" y1="280.5" x2="1046.0" y2="268.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1050.0" y1="280.5" x2="1050.0" y2="268.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1112.0,293.5 L1040.0,293.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1099.0" y1="293.5" x2="1112.0" y2="300.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1099.0" y1="293.5" x2="1112.0" y2="293.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1099.0" y1="293.5" x2="1112.0" y2="286.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1096.0" y1="287.5" x2="1096.0" y2="299.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1046.0" y1="299.5" x2="1046.0" y2="287.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1050.0" y1="299.5" x2="1050.0" y2="287.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1040.0,237.5 L1074.0,237.5 L1074.0,123.5 L1112.0,123.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1053.0" y1="237.5" x2="1040.0" y2="230.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1053.0" y1="237.5" x2="1040.0" y2="237.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1053.0" y1="237.5" x2="1040.0" y2="244.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1056.0" y1="243.5" x2="1056.0" y2="231.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1106.0" y1="117.5" x2="1106.0" y2="129.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1102.0" y1="117.5" x2="1102.0" y2="129.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1412.0,331.5 L1426.0,331.5 L1426.0,161.5 L1412.0,161.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1425.0" y1="331.5" x2="1412.0" y2="324.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1425.0" y1="331.5" x2="1412.0" y2="331.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1425.0" y1="331.5" x2="1412.0" y2="338.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1428.0" y1="337.5" x2="1428.0" y2="325.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1418.0" y1="167.5" x2="1418.0" y2="155.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1422.0" y1="167.5" x2="1422.0" y2="155.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M700.0,256.5 L674.0,256.5 L674.0,142.5 L656.0,142.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="687.0" y1="256.5" x2="700.0" y2="263.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="687.0" y1="256.5" x2="700.0" y2="256.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="687.0" y1="256.5" x2="700.0" y2="249.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="684.0" y1="250.5" x2="684.0" y2="262.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="662.0" y1="148.5" x2="662.0" y2="136.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="666.0" y1="148.5" x2="666.0" y2="136.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M356.0,427.5 L340.0,427.5 L340.0,123.5 L356.0,123.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="343.0" y1="427.5" x2="356.0" y2="434.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="343.0" y1="427.5" x2="356.0" y2="427.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="343.0" y1="427.5" x2="356.0" y2="420.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="340.0" y1="421.5" x2="340.0" y2="433.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="350.0" y1="117.5" x2="350.0" y2="129.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="346.0" y1="117.5" x2="346.0" y2="129.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M656.0,294.5 L700.0,294.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="669.0" y1="294.5" x2="656.0" y2="287.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="669.0" y1="294.5" x2="656.0" y2="294.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="669.0" y1="294.5" x2="656.0" y2="301.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="672.0" y1="300.5" x2="672.0" y2="288.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="694.0" y1="288.5" x2="694.0" y2="300.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="690.0" y1="288.5" x2="690.0" y2="300.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M356.0,351.5 L328.0,351.5 L328.0,380.5 L314.0,380.5" fill="none" stroke="#8a96a8" stroke-width="1.3" stroke-dasharray="5 4"/>
+<line x1="343.0" y1="351.5" x2="356.0" y2="358.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="343.0" y1="351.5" x2="356.0" y2="351.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="343.0" y1="351.5" x2="356.0" y2="344.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="340.0" y1="345.5" x2="340.0" y2="357.5" stroke="#8a96a8" stroke-width="1.3"/>
+<line x1="320.0" y1="386.5" x2="320.0" y2="374.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="324.0" y1="386.5" x2="324.0" y2="374.5" stroke="#8a96a8" stroke-width="1.3"/>
+<path d="M314.0,142.5 L328.0,142.5 L328.0,214.0 L700.0,214.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="327.0" y1="142.5" x2="314.0" y2="135.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="327.0" y1="142.5" x2="314.0" y2="142.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="327.0" y1="142.5" x2="314.0" y2="149.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="330.0" y1="148.5" x2="330.0" y2="136.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="694.0" y1="208.0" x2="694.0" y2="220.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="690.0" y1="208.0" x2="690.0" y2="220.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M656.0,610.5 L686.0,610.5 L686.0,524.0 L700.0,524.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="669.0" y1="610.5" x2="656.0" y2="603.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="669.0" y1="610.5" x2="656.0" y2="610.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="669.0" y1="610.5" x2="656.0" y2="617.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="672.0" y1="616.5" x2="672.0" y2="604.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="694.0" y1="518.0" x2="694.0" y2="530.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="690.0" y1="518.0" x2="690.0" y2="530.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1112.0,551.5 L1062.0,551.5 L1062.0,508.0 L1040.0,508.0" fill="none" stroke="#8a96a8" stroke-width="1.3" stroke-dasharray="5 4"/>
+<line x1="1099.0" y1="551.5" x2="1112.0" y2="558.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="1099.0" y1="551.5" x2="1112.0" y2="551.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="1099.0" y1="551.5" x2="1112.0" y2="544.5" stroke="#8a96a8" stroke-width="1.3"/><line x1="1096.0" y1="545.5" x2="1096.0" y2="557.5" stroke="#8a96a8" stroke-width="1.3"/>
+<line x1="1046.0" y1="514.0" x2="1046.0" y2="502.0" stroke="#8a96a8" stroke-width="1.3"/><line x1="1050.0" y1="514.0" x2="1050.0" y2="502.0" stroke="#8a96a8" stroke-width="1.3"/>
+<path d="M790.0,700.0 L790.0,538.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="790.0" y1="687.0" x2="783.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="790.0" y1="687.0" x2="790.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="790.0" y1="687.0" x2="797.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="796.0" y1="684.0" x2="784.0" y2="684.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="784.0" y1="544.0" x2="796.0" y2="544.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="784.0" y1="548.0" x2="796.0" y2="548.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<rect x="794.0" y="638.0" width="105.0" height="14" fill="#fff" opacity="0.92"/>
+<text x="796.0" y="648.0" font-size="9.8" fill="#4b5563" text-anchor="start">product_part_id</text>
+<path d="M930.0,700.0 L930.0,538.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="930.0" y1="687.0" x2="923.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="930.0" y1="687.0" x2="930.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="930.0" y1="687.0" x2="937.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="936.0" y1="684.0" x2="924.0" y2="684.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="924.0" y1="544.0" x2="936.0" y2="544.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="924.0" y1="548.0" x2="936.0" y2="548.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<rect x="934.0" y="638.0" width="98.8" height="14" fill="#fff" opacity="0.92"/>
+<text x="936.0" y="648.0" font-size="9.8" fill="#4b5563" text-anchor="start">target_part_id</text>
+<path d="M1040.0,819.5 L1058.0,819.5 L1058.0,880.0 L1040.0,880.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1053.0" y1="819.5" x2="1040.0" y2="812.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1053.0" y1="819.5" x2="1040.0" y2="819.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1053.0" y1="819.5" x2="1040.0" y2="826.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1056.0" y1="825.5" x2="1056.0" y2="813.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1046.0" y1="886.0" x2="1046.0" y2="874.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1050.0" y1="886.0" x2="1050.0" y2="874.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M656.0,762.5 L700.0,762.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="669.0" y1="762.5" x2="656.0" y2="755.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="669.0" y1="762.5" x2="656.0" y2="762.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="669.0" y1="762.5" x2="656.0" y2="769.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="672.0" y1="768.5" x2="672.0" y2="756.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="694.0" y1="756.5" x2="694.0" y2="768.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="690.0" y1="756.5" x2="690.0" y2="768.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1112.0,762.5 L1040.0,762.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1099.0" y1="762.5" x2="1112.0" y2="769.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1099.0" y1="762.5" x2="1112.0" y2="762.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1099.0" y1="762.5" x2="1112.0" y2="755.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1096.0" y1="756.5" x2="1096.0" y2="768.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1046.0" y1="768.5" x2="1046.0" y2="756.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1050.0" y1="768.5" x2="1050.0" y2="756.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1412.0,781.5 L1446.0,781.5 L1446.0,255.5 L1412.0,255.5" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1425.0" y1="781.5" x2="1412.0" y2="774.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1425.0" y1="781.5" x2="1412.0" y2="781.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1425.0" y1="781.5" x2="1412.0" y2="788.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1428.0" y1="787.5" x2="1428.0" y2="775.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1418.0" y1="261.5" x2="1418.0" y2="249.5" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1422.0" y1="261.5" x2="1422.0" y2="249.5" stroke="#3f4b5c" stroke-width="1.3"/>
+<path d="M1172.0,700.0 L1172.0,674.0 L1000.0,674.0 L1000.0,538.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="1172.0" y1="687.0" x2="1165.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1172.0" y1="687.0" x2="1172.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1172.0" y1="687.0" x2="1179.0" y2="700.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="1178.0" y1="684.0" x2="1166.0" y2="684.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="994.0" y1="544.0" x2="1006.0" y2="544.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="994.0" y1="548.0" x2="1006.0" y2="548.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<g><rect x="24" y="760" width="300" height="118" rx="5" fill="#fff" stroke="#c3cbd6" stroke-dasharray="4 3"/>
+<text x="36" y="780" font-size="12" font-weight="700" fill="#1d2430">범례</text>
+<rect x="36" y="790" width="22" height="13" rx="3" fill="#fde7a7"/><text x="47" y="800.2" font-size="8.6" font-weight="700" fill="#7a4a06" text-anchor="middle">PK</text>
+<text x="63" y="800.5" font-size="10.5" fill="#4b5563">기본키</text>
+<rect x="114" y="790" width="22" height="13" rx="3" fill="#dce8fb"/><text x="125" y="800.2" font-size="8.6" font-weight="700" fill="#1f3d7a" text-anchor="middle">FK</text>
+<text x="141" y="800.5" font-size="10.5" fill="#4b5563">외래키</text>
+<rect x="192" y="790" width="22" height="13" rx="3" fill="#e6e8ec"/><text x="203" y="800.2" font-size="8.6" font-weight="700" fill="#3b4250" text-anchor="middle">UQ</text>
+<text x="219" y="800.5" font-size="10.5" fill="#4b5563">유일값</text>
+<path d="M36.0,824.0 L94.0,824.0" fill="none" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="49.0" y1="824.0" x2="36.0" y2="817.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="49.0" y1="824.0" x2="36.0" y2="824.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="49.0" y1="824.0" x2="36.0" y2="831.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="52.0" y1="830.0" x2="52.0" y2="818.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<line x1="88.0" y1="818.0" x2="88.0" y2="830.0" stroke="#3f4b5c" stroke-width="1.3"/><line x1="84.0" y1="818.0" x2="84.0" y2="830.0" stroke="#3f4b5c" stroke-width="1.3"/>
+<text x="104" y="828" font-size="10.5" fill="#4b5563">FK 제약 관계 (왼쪽 N : 오른쪽 1)</text>
+<path d="M36.0,848.0 L94.0,848.0" fill="none" stroke="#8a96a8" stroke-width="1.3" stroke-dasharray="5 4"/>
+<line x1="49.0" y1="848.0" x2="36.0" y2="841.0" stroke="#8a96a8" stroke-width="1.3"/><line x1="49.0" y1="848.0" x2="36.0" y2="848.0" stroke="#8a96a8" stroke-width="1.3"/><line x1="49.0" y1="848.0" x2="36.0" y2="855.0" stroke="#8a96a8" stroke-width="1.3"/><line x1="52.0" y1="854.0" x2="52.0" y2="842.0" stroke="#8a96a8" stroke-width="1.3"/>
+<line x1="88.0" y1="842.0" x2="88.0" y2="854.0" stroke="#8a96a8" stroke-width="1.3"/><line x1="84.0" y1="842.0" x2="84.0" y2="854.0" stroke="#8a96a8" stroke-width="1.3"/>
+<text x="104" y="852" font-size="10.5" fill="#4b5563">논리 참조 (DB FK 제약 없음)</text>
+<text x="36" y="870" font-size="9.8" fill="#6b7280">컬럼 일부 생략 · 타입은 PostgreSQL 실제 정의</text>
+</g>
+</g>
+</svg>

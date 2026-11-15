@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}견적서 {{ data.document_number }}{% endblock %}
+{% block stylesheet %}quotation-domestic.css{% endblock %}
+{% block footer_info %}{{ data.company.name_ko }}{% endblock %}
+{% block content %}
+
+<div class="title-bar"><span>견 적 서</span></div>
+
+<div class="header-row">
+  <div class="recipient-block">
+    <div class="recipient-name">수신 : {{ data.customer.name }} 귀중</div>
+    <ol class="meta-list">
+      <li>견적번호 : {{ data.document_number }}</li>
+      <li>견적일자 : {{ data.document_date.strftime('%Y년 %m월 %d일') }}</li>
+      {% if data.terms.valid_until %}<li>유효기간 : {{ data.terms.valid_until }}</li>{% endif %}
+      <li>참 조 : {{ data.customer.contact_person or '' }}</li>
+      {% if data.customer.tax_id %}<li>사업자번호(VAT) : {{ data.customer.tax_id }}</li>{% endif %}
+      {% if data.terms.payment_terms %}<li>결제조건 : {{ data.terms.payment_terms }}</li>{% endif %}
+    </ol>
+  </div>
+  <div class="company-block">
+    <div class="logo-box"><img src="assets/logo-domestic.png" alt="XBEAMTECH"></div>
+    <table class="company-table">
+      <tr>
+        <th>상 호</th>
+        <td>{{ data.company.name_ko }}</td>
+        <th>대표이사</th>
+        <td>{{ data.company.representative_ko or '' }}</td>
+      </tr>
+      <tr>
+        <th>주 소</th>
+        <td colspan="3">{{ data.company.address_ko or '' }}</td>
+      </tr>
+      <tr>
+        <th>업 종</th>
+        <td>{{ data.company.business_type_ko or '' }}</td>
+        <th>업 태</th>
+        <td>{{ data.company.business_item_ko or '' }}</td>
+      </tr>
+      <tr>
+        <th>대표전화</th>
+        <td>{{ data.company.tel or '' }}</td>
+        <th>팩 스</th>
+        <td>{{ data.company.fax or '' }}</td>
+      </tr>
+    </table>
+    {% if data.prepared_by %}
+    <div class="staff">담당 : {{ data.prepared_by }}{% if data.prepared_email %}, {{ data.prepared_email }}{% endif %}</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="amount-row">
+  <span class="amount-label">견적금액 :</span>
+  <span class="amount-words">{{ amount_in_korean }}</span>
+  {% if data.vat_excluded %}<span class="amount-suffix">/[부가세별도]</span>{% endif %}
+  <span class="amount-numeric">₩{{ '{:,.0f}'.format(data.subtotal) }}</span>
+  {% if data.vat_excluded %}<span class="amount-suffix">[부가세별도]</span>{% endif %}
+</div>
+
+<table class="line-items">
+  <thead>
+    <tr>
+      <th class="col-no">No</th>
+      <th class="col-desc">Description</th>
+      <th class="col-qty">{% if data.has_multi_tier and data.has_single_tier_in_moq %}Q'ty / MOQ{% elif data.has_multi_tier %}MOQ{% else %}Q'ty{% endif %}</th>
+      <th class="col-uom">Unit</th>
+      <th class="col-price">Unit Price</th>
+      <th class="col-total">Total Price</th>
+      <th class="col-rem">Remark</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data.items %}
+    <tr class="{% if item.price_tiers %}moq-group{% endif %}">
+      <td class="col-no">{{ item.line_no }}</td>
+      <td class="col-desc">
+        {% if item.part_number %}<div class="pn">{{ item.part_number | highlight }}</div>{% endif %}
+        {% if item.description %}<div class="spec">{{ item.description | highlight }}</div>{% endif %}
+      </td>
+      {% if item.price_tiers %}
+      <td class="col-qty moq-stack">
+        {% for tier in item.price_tiers %}<div>{% if tier.quantity_text %}{{ tier.quantity_text }}{% else %}{{ '{:,.0f}'.format(tier.quantity) if tier.quantity == tier.quantity.to_integral_value() else '{:,}'.format(tier.quantity) }}{% endif %}</div>{% endfor %}
+      </td>
+      <td class="col-uom moq-stack">
+        {% for tier in item.price_tiers %}<div>{{ tier.uom }}</div>{% endfor %}
+      </td>
+      <td class="col-price moq-stack">
+        {% for tier in item.price_tiers %}<div>{% if tier.unit_price_text %}{{ tier.unit_price_text }}{% else %}{{ '{:,.0f}'.format(tier.unit_price) }}{% endif %}</div>{% endfor %}
+      </td>
+      <td class="col-total moq-stack">
+        {% for tier in item.price_tiers %}<div>{% if tier.amount_text or tier.unit_price_text or tier.quantity_text %}{{ tier.amount_text or 'TBD' }}{% else %}{{ '{:,.0f}'.format(tier.amount) }}{% endif %}</div>{% endfor %}
+      </td>
+      <td class="col-rem">{{ item.line_remarks or '' }}</td>
+      {% else %}
+      <td class="col-qty">{% if item.quantity_text %}{{ item.quantity_text }}{% else %}{{ '{:,.0f}'.format(item.quantity) if item.quantity == item.quantity.to_integral_value() else '{:,}'.format(item.quantity) }}{% endif %}</td>
+      <td class="col-uom">{{ item.uom }}</td>
+      <td class="col-price">{% if item.unit_price_text %}{{ item.unit_price_text }}{% else %}{{ '{:,.0f}'.format(item.unit_price) }}{% endif %}</td>
+      <td class="col-total">{% if item.amount_text or item.unit_price_text or item.quantity_text %}{{ item.amount_text or 'TBD' }}{% else %}{{ '{:,.0f}'.format(item.amount) }}{% endif %}</td>
+      <td class="col-rem">{{ item.line_remarks or '' }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    {% if (not data.has_multi_tier) or data.has_single_tier_in_moq %}
+    <tr class="sum-row">
+      <td colspan="4" class="sum-label">{% if data.has_single_tier_in_moq %}소 계 (단가 확정 품목){% else %}합 계{% endif %}</td>
+      <td class="col-price">부가세{% if data.vat_excluded %}별도{% else %}포함{% endif %}</td>
+      <td class="col-total">{{ '{:,.0f}'.format(data.subtotal) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% if data.discount_amount and data.discount_amount > 0 %}
+    <tr class="sum-row">
+      <td colspan="4" class="sum-label">할 인{% if data.discount_reason %} <span style="font-weight:400;color:#555;font-size:7pt;">({{ data.discount_reason }})</span>{% endif %}</td>
+      <td class="col-price"></td>
+      <td class="col-total">- {{ '{:,.0f}'.format(data.discount_amount) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% endif %}
+    {% if data.shipping_fee and data.shipping_fee > 0 %}
+    <tr class="sum-row">
+      <td colspan="4" class="sum-label">배송비</td>
+      <td class="col-price"></td>
+      <td class="col-total">{{ '{:,.0f}'.format(data.shipping_fee) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% endif %}
+    <tr class="total-row">
+      <td colspan="4" class="sum-label">{% if data.has_single_tier_in_moq %}소 계 (VAT 포함){% else %}총 계{% endif %}</td>
+      <td class="col-price">부가세합계</td>
+      <td class="col-total">{{ '{:,.0f}'.format(data.total) }}</td>
+      <td class="col-rem"></td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% if data.has_multi_tier and data.has_single_tier_in_moq %}
+<div class="tbd-note">* MOQ 품목은 수량 구간별 단가를 표시하며 소계에 합산되지 않습니다.</div>
+{% endif %}
+{% if data.has_tbd %}
+<div class="tbd-note">* TBD 항목은 합계에 포함되지 않습니다.</div>
+{% endif %}
+
+{% if data.terms.remarks %}
+<div class="remarks-block">* 비고<br>{{ data.terms.remarks | replace('&', '&amp;') | replace('<', '&lt;') | replace('>', '&gt;') | replace('&lt;br&gt;', '\n') | replace('&lt;br/&gt;', '\n') | replace('&lt;br /&gt;', '\n') | replace('\n', '<br>') | safe }}</div>
+{% elif data.stamp_omitted %}
+<div class="remarks-block">* 비고<br>1. 직인생략</div>
+{% endif %}
+
+{% endblock %}
